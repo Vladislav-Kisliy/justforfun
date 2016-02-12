@@ -20,6 +20,7 @@
 
     <modules>
         <module>TicTacToe</module>
+        <module>Test</module>
     </modules>
 
     <dependencies>
@@ -55,29 +56,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>2.4</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <configuration>
-                            <groupId>com.oracle</groupId>
-                            <artifactId>ojdbc6</artifactId>
-                            <version>${software.oracle.jdbc.version}</version>
-                            <packaging>jar</packaging>
-                            <file>${main.basedir}/api/automation/ojdbc6-12.1.0.1.jar</file>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
         <pluginManagement>
             <plugins>
