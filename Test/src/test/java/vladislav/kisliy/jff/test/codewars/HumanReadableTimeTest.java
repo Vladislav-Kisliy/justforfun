@@ -27,39 +27,34 @@ import static org.junit.Assert.*;
  *
  * @author vlad
  */
-public class DoubleLinearTest {
-    
-    public DoubleLinearTest() {
+public class HumanReadableTimeTest {
+
+    public HumanReadableTimeTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
 
-    private static void testing(int actual, int expected) {
-        assertEquals(expected, actual);
-    }
- 
     @Test
-    public void test() {
-        System.out.println("Fixed Tests dblLinear");
-        testing(DoubleLinear.dblLinear(10), 22);
-        testing(DoubleLinear.dblLinear(20), 57);
-        testing(DoubleLinear.dblLinear(30), 91);
-        testing(DoubleLinear.dblLinear(50), 175);
-             
+    public void tests() {
+        assertEquals("makeReadable(0)", "00:00:00", HumanReadableTime.makeReadable(0));
+        assertEquals("makeReadable(5)", "00:00:05", HumanReadableTime.makeReadable(5));
+        assertEquals("makeReadable(60)", "00:01:00", HumanReadableTime.makeReadable(60));
+        assertEquals("makeReadable(86399)", "23:59:59", HumanReadableTime.makeReadable(86399));
+        assertEquals("makeReadable(359999)", "99:59:59", HumanReadableTime.makeReadable(359999));
     }
-    
+
 }

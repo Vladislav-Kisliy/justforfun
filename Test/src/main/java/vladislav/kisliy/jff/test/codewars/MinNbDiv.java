@@ -26,20 +26,23 @@ public class MinNbDiv {
         23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97,
         101, 103};
 
-    public static int findMinNum(int num) {
-        int result = num;
-        if (num > 2) {
-            if (isPrimeNumber(num)) {
-                result = 1 << (num - 1);
-            } else {
-                while (factorization(result) != num) {
-                    result++;
-                }
-            }
-        }
-
-        return result;
-    }
+//    public static int findMinNum(int num) {
+//        int result = num;
+//        if (num > 2) {
+//            final long start = System.currentTimeMillis();
+//            if (isPrimeNumber(num)) {
+//                result = 1 << (num - 1);
+//            } else {
+//                while (factorization(result) != num) {
+//                    result++;
+//                }
+//            }
+////            System.out.println("Array =" + Arrays.toString(cache));
+//            System.out.format("%.3f\n", (System.currentTimeMillis() - start) / 1000.0);
+//        }
+//
+//        return result;
+//    }
 
     private static int factorization(long x) {
         int count = 0;
@@ -61,5 +64,23 @@ public class MinNbDiv {
             }
         }
         return false;
+    }
+    
+    public static int findMinNum(int num) {
+        int div_count = 0;
+        int value = 0;
+        final long start = System.currentTimeMillis();
+        while (div_count != num) {
+            value++;
+            div_count = 0;
+            for (int i = 1; i <= value; i++) {
+                if (value % i == 0) {
+                    div_count++;
+                }
+            }
+        }
+        System.out.println("num =" + num);
+        System.out.format("%.3f\n", (System.currentTimeMillis() - start) / 1000.0);
+        return value;
     }
 }

@@ -20,37 +20,14 @@ package vladislav.kisliy.jff.test.codewars;
  *
  * @author vlad
  */
-public class DoubleLinear {
+public class Triangular {
 
-    private static final int[] ARRAY = new int[10000];
-
-    static {
-        ARRAY[0] = 1;
-        ARRAY[1] = 3;
-        ARRAY[2] = 4;
-        ARRAY[3] = 7;
-        ARRAY[4] = 9;
-        ARRAY[5] = 10;
-        ARRAY[6] = 13;
-        ARRAY[7] = 15;
-        ARRAY[8] = 19;
-        ARRAY[9] = 21;
-        ARRAY[10] = 22;
-        ARRAY[11] = 27;
-        int counter = 12;
-        for (int i = 27; i < 10000; i++) {
-            if ((i - 1) % 2 == 0 || (i - 1 % 3 == 0)) {
-                ARRAY[counter] = i;
-                counter++;
-            }
+    public static int triangular(int n) {
+        int result = 0;
+        if (n >= 0) {
+            result = n*(n+1)/2;
         }
+        return result;
     }
 
-    public static int dblLinear(int n) {
-        return ARRAY[n];
-    }
-
-    public static void main(String[] args) {
-        System.out.println("50 ="+ARRAY[50]);
-    }
 }

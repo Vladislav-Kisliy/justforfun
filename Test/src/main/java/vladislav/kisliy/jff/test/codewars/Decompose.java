@@ -17,6 +17,7 @@
 package vladislav.kisliy.jff.test.codewars;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -29,15 +30,16 @@ public class Decompose {
 
     public String decompose(long n) {
         Set<Long> resultCollector = new TreeSet<>();
+
         if (n > 1) {
             System.out.println("    n =" + n + ", n-1 =" + (n - 1));
-            long balance = n * n - ((n - 1) * (n - 1));
-            resultCollector.add(n - 1);
-            while (balance > 0) {
-                long sqrt = (long) Math.pow(balance, 0.5);
-                System.out.println("balance =" + balance + ", sqrt =" + sqrt);
-                balance = balance - (sqrt * sqrt);
-                resultCollector.add(sqrt);
+            long i = n - 1;
+            while (i * (i + 1) * (2 * i + 1) / 6 >= n * n) {
+                resultCollector.add(i);
+                if (dfs(n*n, i, resultCollector)) {
+                    break;
+                }
+                
             }
         } else {
             resultCollector.add(n);
@@ -46,42 +48,63 @@ public class Decompose {
         return resultCollector.stream().map(Object::toString).collect(Collectors.joining(" "));
     }
     
-//    public long dfs
-    
-    
-    
-    
-//    public String decompose(long n) {
-//        List<Long> list = new List<>();
-//        DecomposeHelper(n * n, n - 1, list);
-//        list.Reverse();
-//        return list.Any() ? String.Join(" ", list) : null;
-//    }
-//
-//    private static boolean DecomposeHelper(long n, long value, List<Long> list) {
-//        if (n == 0) {
-//            return true;
-//        }
-//        if (n == 1 && !list.contains(1l)) {
-//            list.add(1l);
-//            return true;
-//        }
-//        if (new []{2L, 3L}.contains(n)) {
-//            return false;
-//        }
-//        for (var i = value; i > 0; i--) {
-//            if (list.Contains(i)) {
-//                return false;
-//            }
-//            list.Add(i);
-//            var nextN = n - (i * i);
-//            var works = DecomposeHelper(nextN, (long) Math.Floor(Math.Sqrt(nextN)), list);
-//            if (works) {
-//                return true;
-//            }
-//            list.Remove(i);
-//        }
-//        return false;
-//    }
+//def decompose(n):
+//    global suc
+//    
+//    suc = False
+//    a = []
+//    i = n - 1
+//    while i * (i + 1) * (2 * i + 1) / 6 >= n * n:
+//        a.append(i)
+//        dfs(n * n, i, a)
+//        if suc:
+//            break
+//        a.pop()
+//        i -= 1
+//    return a[::-1] if len(a) > 1 else None
 
+    
+        private static boolean dfs(long s, long n, Set<Long> a) {
+        boolean result = false;
+        if (s == 0 && a.size()>2) {
+            a.remove(n);
+            result = true;
+        } else {
+            s -=n*n;
+            long i = n -1;
+            while (i * (i + 1) * (2 * i + 1) / 6 >= s) {
+                if (i*i > s) {
+                    i--;
+                } else {
+                    a.add(i);
+                    if (!dfs(s, i, a)) {
+                        a.remove(i);
+                        i--;
+                        s += n * n;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+//        
+//    public String decompose(long n) {
+//        Set<Long> resultCollector = new TreeSet<>();
+//
+//        if (n > 1) {
+//            System.out.println("    n =" + n + ", n-1 =" + (n - 1));
+//            long balance = n * n - ((n - 1) * (n - 1));
+//            resultCollector.add(n - 1);
+//            while (balance > 0) {
+//                long sqrt = (long) Math.pow(balance, 0.5);
+//                System.out.println("balance =" + balance + ", sqrt =" + sqrt);
+//                balance = balance - (sqrt * sqrt);
+//                resultCollector.add(sqrt);
+//            }
+//        } else {
+//            resultCollector.add(n);
+//        }
+////        resultCollector.stream().
+//        return resultCollector.stream().map(Object::toString).collect(Collectors.joining(" "));
+//    }
 }

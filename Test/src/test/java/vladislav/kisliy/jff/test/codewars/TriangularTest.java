@@ -16,41 +16,46 @@
  */
 package vladislav.kisliy.jff.test.codewars;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /**
  *
  * @author vlad
  */
-public class DoubleLinear {
-
-    private static final int[] ARRAY = new int[10000];
-
-    static {
-        ARRAY[0] = 1;
-        ARRAY[1] = 3;
-        ARRAY[2] = 4;
-        ARRAY[3] = 7;
-        ARRAY[4] = 9;
-        ARRAY[5] = 10;
-        ARRAY[6] = 13;
-        ARRAY[7] = 15;
-        ARRAY[8] = 19;
-        ARRAY[9] = 21;
-        ARRAY[10] = 22;
-        ARRAY[11] = 27;
-        int counter = 12;
-        for (int i = 27; i < 10000; i++) {
-            if ((i - 1) % 2 == 0 || (i - 1 % 3 == 0)) {
-                ARRAY[counter] = i;
-                counter++;
-            }
-        }
+public class TriangularTest {
+    
+    public TriangularTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
+    
+    @Before
+    public void setUp() {
+    }
+    
+    @After
+    public void tearDown() {
     }
 
-    public static int dblLinear(int n) {
-        return ARRAY[n];
+    @Test
+    public void test_Two_Should_Be_Three() throws Exception {
+          assertEquals(3, Triangular.triangular(2));
     }
-
-    public static void main(String[] args) {
-        System.out.println("50 ="+ARRAY[50]);
+    
+    @Test
+    public void test_Four_Should_Be_Ten() throws Exception {
+          assertEquals(10, Triangular.triangular(4));
     }
+    
 }
