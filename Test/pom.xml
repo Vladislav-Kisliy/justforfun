@@ -15,8 +15,30 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>vladislav.kisliy.jff.test.Application</mainClass>
+        <es.version>2.3.3</es.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${es.version}</version>
+        </dependency>
+        <!-- add the shield jar as a dependency -->
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>shield</artifactId>
+            <version>2.3.4</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -33,6 +55,43 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.qulice</groupId>
+                <artifactId>qulice-maven-plugin</artifactId>
+                <version>0.16.2</version>
+                <configuration>
+                    <license>file:${basedir}/LICENSE.txt</license>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.5.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+    <repositories>
+      <!-- add the elasticsearch repo -->
+      <repository>
+         <id>elasticsearch-releases</id>
+         <url>https://maven.elasticsearch.org/releases</url>
+         <releases>
+            <enabled>true</enabled>
+         </releases>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+   </repositories>
 </project>
