@@ -20,12 +20,16 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
 public class IntegerFileProcessor implements FileProcessor<Integer> {
+
+    private static final Logger LOG = Logger.getLogger(IntegerFileProcessor.class.getName());
 
     public static final int BYTE_MULTIPLIER = 4;
     public static final int MAX_BUFFER_SIZE = 1024;
@@ -41,18 +45,17 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
         boolean result = true;
         try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
                 FileChannel fileChannel = randomFile.getChannel();) {
-
             MappedByteBuffer buffer = fileChannel
                     .map(FileChannel.MapMode.READ_ONLY, 0, randomFile.length());
             int beforeValue = buffer.getInt();
-            for (int i = BYTE_MULTIPLIER; i < randomFile.length(); i += BYTE_MULTIPLIER) {
+            for (int i = 1; i < randomFile.length() / 4; i++) {
                 int newValue = buffer.getInt();
-                if (i < BYTE_MULTIPLIER * 10) {
-                    System.out.println("[" + i / BYTE_MULTIPLIER + "] =" + newValue);
+                if (i < 10) {
+                    LOG.log(Level.INFO, "[{0}] ={1}", new Object[]{i, newValue});
                 }
                 if (beforeValue > newValue) {
                     result = false;
-                    System.out.println("before =" + beforeValue + ", new =" + newValue);
+                    LOG.log(Level.INFO, "before ={0}, new ={1}", new Object[]{beforeValue, newValue});
                     break;
                 }
                 beforeValue = newValue;
