@@ -79,28 +79,30 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
     @Override
     public Integer[] fillArray(int start, int end) {
         Integer[] result = null;
-        try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
-                FileChannel fileChannel = randomFile.getChannel();) {
+        if (start < end) {
+            try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
+                    FileChannel fileChannel = randomFile.getChannel();) {
 
-            int arraySize = end - start;
-            long fileSize = randomFile.length();
-            long bufferSize = arraySize * BYTE_MULTIPLIER;
-            long bufferStartPositition = start * BYTE_MULTIPLIER;
+                int arraySize = end - start;
+                long fileSize = randomFile.length();
+                long bufferSize = arraySize * BYTE_MULTIPLIER;
+                long bufferStartPositition = start * BYTE_MULTIPLIER;
 
-            if (fileSize < bufferSize + bufferStartPositition) {
-                bufferSize = fileSize - bufferStartPositition;
-                arraySize = (int) (bufferSize / BYTE_MULTIPLIER);
+                if (fileSize < bufferSize + bufferStartPositition) {
+                    bufferSize = fileSize - bufferStartPositition;
+                    arraySize = (int) (bufferSize / BYTE_MULTIPLIER);
+                }
+
+                MappedByteBuffer buffer = fileChannel.map(
+                        FileChannel.MapMode.READ_ONLY, bufferStartPositition, bufferSize);
+                result = new Integer[arraySize];
+                for (int i = 0; i < arraySize; i++) {
+                    result[i] = buffer.getInt();
+                }
+                buffer.clear();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            MappedByteBuffer buffer = fileChannel.map(
-                    FileChannel.MapMode.READ_ONLY, bufferStartPositition, bufferSize);
-            result = new Integer[arraySize];
-            for (int i = 0; i < arraySize; i++) {
-                result[i] = buffer.getInt();
-            }
-            buffer.clear();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         return result;

@@ -16,11 +16,6 @@
  */
 package vladislav.kisliy.jff.test.file;
 
-import java.io.FileNotFoundException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -102,4 +97,9 @@ public class IntegerFileProcessorTest {
         instance.fillArray(1, 10);
     }
 
+    @Test
+    public void testFillIncorrectStartEnd() {
+        IntegerFileProcessor instance = new IntegerFileProcessor("/sasasasasas");
+        assertNull(instance.fillArray(10, 1));
+    }
 }
