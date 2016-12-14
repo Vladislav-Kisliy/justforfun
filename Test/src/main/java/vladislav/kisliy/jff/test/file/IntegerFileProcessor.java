@@ -30,13 +30,22 @@ import java.util.logging.Logger;
 public class IntegerFileProcessor implements FileProcessor<Integer> {
 
     private static final Logger LOG = Logger.getLogger(IntegerFileProcessor.class.getName());
-
+    /**
+     * Multiplier for change bytes to integer
+     */
     public static final int BYTE_MULTIPLIER = 4;
-    public static final int MAX_BUFFER_SIZE = 1024;
 
     private final String fileName;
 
+    /**
+     * Initializes filename. Throws IllegalArgumentException for null filename.
+     *
+     * @param fileName
+     */
     public IntegerFileProcessor(String fileName) {
+        if (fileName == null) {
+            throw new IllegalArgumentException();
+        }
         this.fileName = fileName;
     }
 
@@ -44,11 +53,11 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
     public boolean isSorted() {
         boolean result = true;
         try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
-                FileChannel fileChannel = randomFile.getChannel();) {
+                FileChannel fileChannel = randomFile.getChannel()) {
             MappedByteBuffer buffer = fileChannel
                     .map(FileChannel.MapMode.READ_ONLY, 0, randomFile.length());
             int beforeValue = buffer.getInt();
-            for (int i = 1; i < randomFile.length() / 4; i++) {
+            for (int i = 1; i < randomFile.length() / BYTE_MULTIPLIER; i++) {
                 int newValue = buffer.getInt();
                 if (i < 10) {
                     LOG.log(Level.INFO, "[{0}] ={1}", new Object[]{i, newValue});
@@ -72,17 +81,28 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
         Integer[] result = null;
         try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
                 FileChannel fileChannel = randomFile.getChannel();) {
-            int length = end - start;
-            MappedByteBuffer buffer = fileChannel
-                    .map(FileChannel.MapMode.READ_ONLY, start * BYTE_MULTIPLIER, length * BYTE_MULTIPLIER);
-            result = new Integer[length];
-            for (int i = 0; i < length; i++) {
+
+            int arraySize = end - start;
+            long fileSize = randomFile.length();
+            long bufferSize = arraySize * BYTE_MULTIPLIER;
+            long bufferStartPositition = start * BYTE_MULTIPLIER;
+
+            if (fileSize < bufferSize + bufferStartPositition) {
+                bufferSize = fileSize - bufferStartPositition;
+                arraySize = (int) (bufferSize / BYTE_MULTIPLIER);
+            }
+
+            MappedByteBuffer buffer = fileChannel.map(
+                    FileChannel.MapMode.READ_ONLY, bufferStartPositition, bufferSize);
+            result = new Integer[arraySize];
+            for (int i = 0; i < arraySize; i++) {
                 result[i] = buffer.getInt();
             }
             buffer.clear();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         return result;
     }
 }

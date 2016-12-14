@@ -17,12 +17,22 @@
 package vladislav.kisliy.jff.test.file;
 
 /**
- *
+ * 
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public interface FileProcessor<T> {
-    
+public interface FileProcessor<T extends Comparable> {
+    /**
+     * Checks sorting of items in the file.
+     * @return 
+     */
     boolean isSorted();
     
+    /**
+     * Partially reads content from file and put it in array.
+     * @param start
+     * @param end
+     * @return 
+     */
     T[] fillArray(int start, int end);
 }
