@@ -21,13 +21,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
 public class IntegerWriter implements ArrayWriter<Integer> {
+
+    private static final Logger LOG = Logger.getLogger(IntegerWriter.class.getName());
 
     public enum MODE {
         DataOutput, ObjectOutput, FileChannel
@@ -93,7 +98,7 @@ public class IntegerWriter implements ArrayWriter<Integer> {
         buffer.flip();
         try (FileOutputStream out = new FileOutputStream(fileName, append);
                 FileChannel fileChannel = out.getChannel();) {
-            System.out.println("write " + arrayToWrite.length + " int's");
+            LOG.log(Level.INFO, "write {0} int's", arrayToWrite.length);
             while (buffer.hasRemaining()) {
                 fileChannel.write(buffer);
             }
