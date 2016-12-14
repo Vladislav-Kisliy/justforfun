@@ -17,40 +17,40 @@
 package vladislav.kisliy.jff.test.yandex;
 
 /**
- *
+ * Classic merge sort algorithm.
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
 public class MergeSort extends AbstractSorter {
 
-    // stably merge a[lo .. mid] with a[mid+1 ..hi] using aux[lo .. hi]
-    private static void merge(int[] mainArray, int[] tempArray, int start, int middle, int end) {
-        // copy to aux[]
+    // merge mainArray[start .. middle] with mainArray[middle+1 ..end] 
+    // using tempArray[start .. end]
+    private void merge(int[] mainArray, int[] tempArray, int start, int middle, int end) {
         System.arraycopy(mainArray, start, tempArray, start, end - start + 1);
 
-        // merge back to a[]
-        int i = start, j = middle + 1;
-        for (int k = start; k <= end; k++) {
-            if (i > middle) {
-                mainArray[k] = tempArray[j++];
-            } else if (j > end) {
-                mainArray[k] = tempArray[i++];
-            } else if (tempArray[j] < tempArray[i]) {
-                mainArray[k] = tempArray[j++];
+        // merge back to mainArray[]
+        int firstSubarray = start, secondSubarray = middle + 1;
+        for (int counter = start; counter <= end; counter++) {
+            if (firstSubarray > middle) { // exhausted firstSubarray
+                mainArray[counter] = tempArray[secondSubarray++];
+            } else if (secondSubarray > end) { // exhausted secondSubarray
+                mainArray[counter] = tempArray[firstSubarray++];
+            } else if (tempArray[secondSubarray] < tempArray[firstSubarray]) {
+                mainArray[counter] = tempArray[secondSubarray++];
             } else {
-                mainArray[k] = tempArray[i++];
+                mainArray[counter] = tempArray[firstSubarray++];
             }
         }
     }
 
-    // mergesort a[lo..hi] using auxiliary array aux[lo..hi]
+    // mergesort mainArray[start..end] using temp. array tempArray[start..end]
     private void sort(int[] mainArray, int[] tempArray, int start, int end) {
         if (end <= start) {
             return;
         }
-        int mid = start + (end - start) / 2;
-        sort(mainArray, tempArray, start, mid);
-        sort(mainArray, tempArray, mid + 1, end);
-        merge(mainArray, tempArray, start, mid, end);
+        int middle = start + (end - start) / 2;
+        sort(mainArray, tempArray, start, middle);
+        sort(mainArray, tempArray, middle + 1, end);
+        merge(mainArray, tempArray, start, middle, end);
     }
 
     @Override
