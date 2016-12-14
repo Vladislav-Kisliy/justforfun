@@ -100,4 +100,11 @@ public class AllSortTest {
         int[] result = instance.sort(shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
+    
+    @Test
+    public void testMergeSort() {
+        instance = new MergeSort();
+        int[] result = instance.sort(shuffleArray(expResult));
+        assertArrayEquals(expResult, result);
+    }
 }
