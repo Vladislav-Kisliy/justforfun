@@ -27,21 +27,20 @@ public class IntegerFileProcessorTest {
 
     private static final String FILENAME = "/home/vlad/work/projects/school/int_array.bin";
     private static final String FILENAME_SORTED = "/home/vlad/work/projects/school/int_array_sorted.bin";
+    private static final String FILENAME_INCORRECT = "/sasasasasas";
 
     @Test
     public void testSorted() {
         IntegerFileProcessor instance = new IntegerFileProcessor(FILENAME_SORTED);
-        boolean expResult = true;
         boolean result = instance.isSorted();
-        assertEquals(expResult, result);
+        assertTrue(result);
     }
 
     @Test
     public void testUnSorted() {
         IntegerFileProcessor instance = new IntegerFileProcessor(FILENAME);
-        boolean expResult = false;
         boolean result = instance.isSorted();
-        assertEquals(expResult, result);
+        assertFalse(result);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -51,7 +50,7 @@ public class IntegerFileProcessorTest {
 
     @Test(expected = RuntimeException.class)
     public void testSortWrapException() {
-        IntegerFileProcessor instance = new IntegerFileProcessor("/sasasasasas");
+        IntegerFileProcessor instance = new IntegerFileProcessor(FILENAME_INCORRECT);
         boolean result = instance.isSorted();
     }
 
@@ -93,13 +92,13 @@ public class IntegerFileProcessorTest {
 
     @Test(expected = RuntimeException.class)
     public void testFillWrapException() {
-        IntegerFileProcessor instance = new IntegerFileProcessor("/sasasasasas");
+        IntegerFileProcessor instance = new IntegerFileProcessor(" ");
         instance.fillArray(1, 10);
     }
 
     @Test
     public void testFillIncorrectStartEnd() {
-        IntegerFileProcessor instance = new IntegerFileProcessor("/sasasasasas");
+        IntegerFileProcessor instance = new IntegerFileProcessor(FILENAME_INCORRECT);
         assertNull(instance.fillArray(10, 1));
     }
 }
