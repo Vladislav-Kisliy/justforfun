@@ -54,7 +54,7 @@ public class IntegerWriter implements ArrayWriter<Integer> {
     }
 
     @Override
-    public void write(Integer[] arrayToWrite, boolean append) {
+    public final void write(Integer[] arrayToWrite, boolean append) {
         switch (mode) {
             case DataOutput:
                 writeWithDataOoutput(arrayToWrite, append);
@@ -70,8 +70,8 @@ public class IntegerWriter implements ArrayWriter<Integer> {
     }
 
     private void writeWithDataOoutput(Integer[] arrayToWrite, boolean append) {
-        try (DataOutputStream out
-                = new DataOutputStream(new FileOutputStream(fileName, append))) {
+        try (DataOutputStream out = new DataOutputStream(
+                new FileOutputStream(fileName, append))) {
             for (int anInt : arrayToWrite) {
                 out.write(anInt);
             }
@@ -81,8 +81,8 @@ public class IntegerWriter implements ArrayWriter<Integer> {
     }
 
     private void writeWithObjectOutput(Integer[] arrayToWrite, boolean append) {
-        try (ObjectOutputStream out
-                = new ObjectOutputStream(new FileOutputStream(fileName, append));) {
+        try (ObjectOutputStream out = new ObjectOutputStream(
+                new FileOutputStream(fileName, append));) {
             out.writeObject(arrayToWrite);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -90,9 +90,9 @@ public class IntegerWriter implements ArrayWriter<Integer> {
     }
 
     private void writeWithFileChannel(Integer[] arrayToWrite, boolean append) {
-        ByteBuffer buffer = ByteBuffer.allocate(4 * arrayToWrite.length);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(
+                ByteUtils.BYTE_MULTIPLIER * arrayToWrite.length);
         for (int i : arrayToWrite) {
-//            System.out.println("i ="+i);
             buffer.putInt(i);
         }
         buffer.flip();
@@ -106,6 +106,7 @@ public class IntegerWriter implements ArrayWriter<Integer> {
             throw new RuntimeException(e);
         } finally {
             buffer.rewind();
+            buffer.clear();
         }
     }
 }

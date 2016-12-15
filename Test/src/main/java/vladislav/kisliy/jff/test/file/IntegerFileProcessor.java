@@ -30,18 +30,14 @@ import java.util.logging.Logger;
 public class IntegerFileProcessor implements FileProcessor<Integer> {
 
     private static final Logger LOG = Logger.getLogger(IntegerFileProcessor.class.getName());
-    /**
-     * Multiplier for change bytes to integer
-     */
-
+    
     private final String fileName;
-
     /**
-     * Initializes filename. Throws IllegalArgumentException for null filename.
+     * Initializes filename. Throws IllegalArgumentException if filename is null.
      *
      * @param fileName
      */
-    public IntegerFileProcessor(String fileName) {
+    public IntegerFileProcessor(final String fileName) {
         if (fileName == null) {
             throw new IllegalArgumentException();
         }
@@ -49,7 +45,7 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
     }
 
     @Override
-    public boolean isSorted() {
+    public final boolean isSorted() {
         boolean result = true;
         try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
                 FileChannel fileChannel = randomFile.getChannel()) {
@@ -76,7 +72,7 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
     }
 
     @Override
-    public Integer[] fillArray(int start, int end) {
+    public final Integer[] fillArray(int start, int end) {
         Integer[] result = null;
         if (start < end) {
             try (RandomAccessFile randomFile = new RandomAccessFile(fileName, "r");
