@@ -22,16 +22,16 @@ import java.util.Map;
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class CombSort implements Sorter {
+public class CombSort<T extends Comparable> extends AbstractSorter<T> {
 
     @Override
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input) {
         float loadFactor = 1.247f;
-        Map hashMap = new HashMap();
         int step = input.length;
         boolean sorted = false;
-        int accum;
+        T accum;
         while (!sorted) {
             sorted = true;
             step /= loadFactor;
@@ -40,7 +40,7 @@ public class CombSort implements Sorter {
             }
             for (int i = 0; i < input.length - 1; i++) {
                 if ((i + step) < input.length) {
-                    if (input[i] > input[i + step]) {
+                    if (more (input[i], input[i + step])) {
                         accum = input[i];
                         input[i] = input[i + step];
                         input[i + step] = accum;

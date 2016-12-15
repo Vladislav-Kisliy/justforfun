@@ -21,28 +21,29 @@ import java.util.Arrays;
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class QuickSort implements Sorter {
+public class QuickSort<T extends Integer> extends AbstractSorter<T> {
 
     @Override
-    public int[] sort(int[] input) {
+    public Integer[] sort(Integer[] input) {
         quickSort(input, 0, input.length - 1);
         return input;
     }
 
-    private void quickSort(int arr[], int left, int right) {
+    private void quickSort(Integer[] array, int left, int right) {
 //        System.out.println("------------------------");
 //        System.out.println("Start position. array =" + Arrays.toString(arr) + ", left =" + left + ", right =" + right);
-        int index = partition(arr, left, right);
+        int index = partition(array, left, right);
         if (left < index - 1) {
-            quickSort(arr, left, index - 1);
+            quickSort(array, left, index - 1);
         }
         if (index < right) {
-            quickSort(arr, index, right);
+            quickSort(array, index, right);
         }
     }
 
-    private int partition(int arr[], int left, int right) {
+    private int partition(Integer[] arr, int left, int right) {
         int i = left, j = right;
         int tmp;
         int pivot;
@@ -51,10 +52,9 @@ public class QuickSort implements Sorter {
         } else {
             pivot = (arr[left] + arr[right] + arr[(left + right) / 2]) / 3;
         }
-        
+
 //        System.out.println("array =" + Arrays.toString(arr) + ", left =" + left
 //                + ", right =" + right + ", pivot =" + pivot);
-
         while (i <= j) {
             while (arr[i] < pivot) {
                 i++;

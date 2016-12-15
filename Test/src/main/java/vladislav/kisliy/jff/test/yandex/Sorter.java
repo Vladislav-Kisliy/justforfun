@@ -20,8 +20,8 @@ package vladislav.kisliy.jff.test.yandex;
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
-public interface Sorter {
+public interface Sorter<T extends Comparable> {
 
-    int[] sort(int[] input);
+    T[] sort(T[] input);
     
 }

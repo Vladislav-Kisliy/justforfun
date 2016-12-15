@@ -19,11 +19,12 @@ package vladislav.kisliy.jff.test.yandex;
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class ShellSort extends AbstractSorter {
+public class ShellSort<T extends Comparable> extends AbstractSorter<T> {
 
     @Override
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input) {
         int length = input.length;
 
         // 3x+1 increment sequence:  1, 4, 13, 40, 121, 364, 1093, ... 
@@ -38,7 +39,7 @@ public class ShellSort extends AbstractSorter {
 //            System.out.println("h =" + h + ", length =" + length);
             for (int i = h; i < length; i++) {
                 for (int j = i; j >= h; j -= h) {
-                    if (input[j] < input[j - h]) {
+                    if (more (input[j - h], input[j])) {
 //                        System.out.println("swap val =" + input[j] + "[" + j + "] -> [" + (j - h)+"]");
                         swap(input, j, j - h);
                     } 

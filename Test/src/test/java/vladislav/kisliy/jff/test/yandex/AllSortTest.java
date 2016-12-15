@@ -16,9 +16,12 @@
  */
 package vladislav.kisliy.jff.test.yandex;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static vladislav.kisliy.jff.test.yandex.AbstractSorter.shuffleArray;
 
 /**
  *
@@ -26,7 +29,7 @@ import static vladislav.kisliy.jff.test.yandex.AbstractSorter.shuffleArray;
  */
 public class AllSortTest {
 
-    public final int[] expResult = new int[]{
+    public final Integer[] expResult = new Integer[]{
         -30, -29, -28, -27, -26, -25, -24, -23, -22, -21,
         -20, -19, -18, -17, -16, -15, -14, -13, -12, -11,
         -10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
@@ -53,58 +56,65 @@ public class AllSortTest {
         200, 201, 202, 203, 204, 205, 206, 207, 208, 209,
         210, 211, 212, 213, 214, 215, 216, 217, 218, 219,
         333};
-    private Sorter instance;
+    private Sorter<Integer> instance;
+    
+    private final AbstractSorterTest abstractSorterTest = new AbstractSorterTest();
+    private final AbstractSorter<Integer> sortHelper = abstractSorterTest.new AbstractSorterImpl<>();
 
     /**
      * Test of sort method, of class BubbleSort.
      */
     @Test
     public void testBubbleSort() {
-        instance = new BubbleSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new BubbleSort<>();
+//        Integer[] expResult = new Integer[]{-30, -29, -28, -27 };
+//        Integer[] shuffleArray = sortHelper.shuffleArray(expResult);
+//        System.out.println("Array ="+Arrays.toString(shuffleArray));
+        
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
 
     @Test
     public void testCombSort() {
-        instance = new CombSort();
+        instance = new CombSort<>();
         
-        int[] result = instance.sort(shuffleArray(expResult));
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testQuickSort() {
-        instance = new QuickSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new QuickSort<>();
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testSelectionSort() {
-        instance = new SelectionSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new SelectionSort<>();
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testInsertSort() {
-        instance = new InsertSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new InsertSort<>();
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testShellSort() {
-        instance = new ShellSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new ShellSort<>();
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
     
     @Test
     public void testMergeSort() {
-        instance = new MergeSort();
-        int[] result = instance.sort(shuffleArray(expResult));
+        instance = new MergeSort<>();
+        Integer[] result = instance.sort(sortHelper.shuffleArray(expResult));
         assertArrayEquals(expResult, result);
     }
 }

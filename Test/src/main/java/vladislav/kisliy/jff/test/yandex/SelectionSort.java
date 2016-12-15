@@ -19,17 +19,18 @@ package vladislav.kisliy.jff.test.yandex;
 /**
  * Searches min value and put this value on top.
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class SelectionSort extends AbstractSorter {
+public class SelectionSort<T extends Comparable> extends AbstractSorter<T> {
 
     @Override
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input) {
         if (input.length > 0) {
             int insertPosition = 0;
             int minPosition = insertPosition;
             while (insertPosition < input.length) {
                 for (int i = insertPosition; i < input.length; i++) {
-                    if (input[minPosition] > input[i]) {
+                    if (more(input[minPosition], input[i])) {
                         minPosition = i;
                     }
                 }

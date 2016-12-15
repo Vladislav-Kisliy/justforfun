@@ -17,17 +17,18 @@
 package vladislav.kisliy.jff.test.yandex;
 
 /**
- * 
+ *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class InsertSort extends AbstractSorter {
+public class InsertSort<T extends Comparable> extends AbstractSorter<T> {
 
     @Override
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input) {
         if (input.length > 0) {
             for (int i = 0; i < input.length; i++) {
                 for (int j = i; j > 0; j--) {
-                    if (input[j] < input[j - 1]) {
+                    if (more(input[j - 1], input[j])) {
                         swap(input, j, j - 1);
                     } else {
                         break;

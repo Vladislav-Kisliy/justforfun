@@ -16,31 +16,37 @@
  */
 package vladislav.kisliy.jff.test.yandex;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public abstract class AbstractSorter implements Sorter {
-    /**
-     * Exchanges 2 items in the array. srcPos -> dstPos
-     * @param input
-     * @param srcPos
-     * @param dstPos 
-     */
-    public static void swap(int[] input, int srcPos, int dstPos) {
+public abstract class AbstractSorter<T extends Comparable> implements Sorter<T> {
+
+    public void swap(final T[] input, int srcPos, int dstPos) {
         if (dstPos != srcPos) {
-            int accum = input[dstPos];
+            T accum = input[dstPos];
             input[dstPos] = input[srcPos];
             input[srcPos] = accum;
-            
+
         }
     }
-    
-    public static int[] shuffleArray(int[] inputArray) {
-        int[] result = new int[inputArray.length];
-        System.arraycopy(inputArray, 0, result, 0, inputArray.length);
+
+    public T[] shuffleArray(final T[] inputArray) {
+        //        E[] arr = (E[])new Object[INITIAL_ARRAY_LENGTH];
+//        T[] result = (T[]) new Comparable[inputArray.length];
+//        System.arraycopy(inputArray, 0, result, 0, inputArray.length);
+        T[] result = Arrays.copyOf(inputArray, inputArray.length);
+
+          // Variant 2
+//        final T t = inputArray[0];
+//        T[] result = (T[]) Array.newInstance(t.getClass(), inputArray.length);
+//        System.arraycopy(inputArray, 0, result, 0, inputArray.length);
+        
         int index;
         Random random = new Random();
         for (int i = result.length - 1; i > 0; i--) {
@@ -51,4 +57,26 @@ public abstract class AbstractSorter implements Sorter {
         }
         return result;
     }
+
+    public boolean more(final T x, final T y) {
+        return (x.compareTo(y) > 0);
+    }
+
+//    public Integer[] shuffleArray(final Integer[] inputArray) {
+////        E[] arr = (E[])new Object[INITIAL_ARRAY_LENGTH];
+//        Integer[] result = new Integer[inputArray.length];
+//        System.arraycopy(inputArray, 0, result, 0, inputArray.length);
+//        int index;
+//        Random random = new Random();
+//        for (int i = result.length - 1; i > 0; i--) {
+//            index = random.nextInt(i + 1);
+//            if (index != i) {
+//                Integer accum = result[index];
+//            result[index] = result[i];
+//            result[i] = accum;
+////                swap(result, i, index);
+//            }
+//        }
+//        return result;
+//    }
 }

@@ -16,15 +16,19 @@
  */
 package vladislav.kisliy.jff.test.yandex;
 
+import java.util.Arrays;
+
 /**
  * Classic merge sort algorithm.
+ *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class MergeSort extends AbstractSorter {
+public class MergeSort<T extends Comparable> extends AbstractSorter<T> {
 
     // merge mainArray[start .. middle] with mainArray[middle+1 ..end] 
     // using tempArray[start .. end]
-    private void merge(int[] mainArray, int[] tempArray, int start, int middle, int end) {
+    private void merge(T[] mainArray, T[] tempArray, int start, int middle, int end) {
         System.arraycopy(mainArray, start, tempArray, start, end - start + 1);
 
         // merge back to mainArray[]
@@ -34,7 +38,7 @@ public class MergeSort extends AbstractSorter {
                 mainArray[counter] = tempArray[secondSubarray++];
             } else if (secondSubarray > end) { // exhausted secondSubarray
                 mainArray[counter] = tempArray[firstSubarray++];
-            } else if (tempArray[secondSubarray] < tempArray[firstSubarray]) {
+            } else if (more(tempArray[firstSubarray], tempArray[secondSubarray])) {
                 mainArray[counter] = tempArray[secondSubarray++];
             } else {
                 mainArray[counter] = tempArray[firstSubarray++];
@@ -43,7 +47,7 @@ public class MergeSort extends AbstractSorter {
     }
 
     // mergesort mainArray[start..end] using temp. array tempArray[start..end]
-    private void sort(int[] mainArray, int[] tempArray, int start, int end) {
+    private void sort(T[] mainArray, T[] tempArray, int start, int end) {
         if (end <= start) {
             return;
         }
@@ -54,8 +58,8 @@ public class MergeSort extends AbstractSorter {
     }
 
     @Override
-    public int[] sort(int[] input) {
-        int[] aux = new int[input.length];
+    public T[] sort(T[] input) {
+        T[] aux = Arrays.copyOf(input, input.length);
         sort(input, aux, 0, input.length - 1);
         return input;
     }

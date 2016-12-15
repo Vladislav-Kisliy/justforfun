@@ -16,28 +16,25 @@
  */
 package vladislav.kisliy.jff.test.yandex;
 
-import java.util.Arrays;
-
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
+ * @param <T>
  */
-public class BubbleSort extends AbstractSorter {
-    
+public class BubbleSort<T extends Comparable> extends AbstractSorter<T> {
+
     @Override
-    public int[] sort(int[] input) {
+    public T[] sort(T[] input) {
         boolean sorted = false;
         while (!sorted) {
             sorted = true;
             for (int i = 0; i < input.length - 1; i++) {
-                if (input[i] > input[i + 1]) {
+                if (more(input[i], input[i + 1])) {
                     sorted = false;
-                    swap(input, i, i+1);
+                    swap(input, i, i + 1);
                 }
             }
         }
-//        System.out.println("result ="+Arrays.toString(input));
         return input;
     }
-
 }
