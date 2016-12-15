@@ -33,7 +33,6 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
     /**
      * Multiplier for change bytes to integer
      */
-    public static final int BYTE_MULTIPLIER = 4;
 
     private final String fileName;
 
@@ -57,7 +56,7 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
             MappedByteBuffer buffer = fileChannel
                     .map(FileChannel.MapMode.READ_ONLY, 0, randomFile.length());
             int beforeValue = buffer.getInt();
-            for (int i = 1; i < randomFile.length() / BYTE_MULTIPLIER; i++) {
+            for (int i = 1; i < ByteUtils.bytesToInt(randomFile.length()); i++) {
                 int newValue = buffer.getInt();
                 if (i < 10) {
                     LOG.log(Level.INFO, "[{0}] ={1}", new Object[]{i, newValue});
@@ -85,12 +84,12 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
 
                 int arraySize = end - start;
                 long fileSize = randomFile.length();
-                long bufferSize = arraySize * BYTE_MULTIPLIER;
-                long bufferStartPositition = start * BYTE_MULTIPLIER;
+                long bufferSize = ByteUtils.intToBytes(arraySize);
+                long bufferStartPositition = ByteUtils.intToBytes(start);
 
                 if (fileSize < bufferSize + bufferStartPositition) {
                     bufferSize = fileSize - bufferStartPositition;
-                    arraySize = (int) (bufferSize / BYTE_MULTIPLIER);
+                    arraySize = ByteUtils.bytesToInt(bufferSize);
                 }
 
                 MappedByteBuffer buffer = fileChannel.map(
