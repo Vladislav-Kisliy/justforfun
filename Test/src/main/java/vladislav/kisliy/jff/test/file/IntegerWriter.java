@@ -21,8 +21,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -69,6 +70,43 @@ public class IntegerWriter implements ArrayWriter<Integer> {
         }
     }
 
+    @Override
+    public void dropToFile(Collection<Integer> collection, boolean append,
+            float clearFactor) {
+        if (clearFactor < 0.0f || clearFactor > 1.0f) {
+            throw new IllegalArgumentException();
+        }
+        ByteBuffer buffer = ByteBuffer.allocateDirect(
+                ByteUtils.BYTE_MULTIPLIER * collection.size());
+        int itemsToProcess = (int) (collection.size() * clearFactor);
+        Collection processedItems = new ArrayList(itemsToProcess);
+        int i = 0;
+        for (Integer item : collection) {
+            if (i < itemsToProcess) {
+                buffer.putInt(item);
+                processedItems.add(item);
+            }
+            i++;
+        }
+        collection.removeAll(processedItems);
+        System.out.println("will drop to file =" + itemsToProcess
+                + ", original collection size =" + collection.size());
+
+        buffer.flip();
+        try (FileOutputStream out = new FileOutputStream(fileName, append);
+                FileChannel fileChannel = out.getChannel();) {
+            LOG.log(Level.INFO, "write {0} int's", collection.size());
+            while (buffer.hasRemaining()) {
+                fileChannel.write(buffer);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            buffer.rewind();
+            buffer.clear();
+        }
+    }
+
     private void writeWithDataOoutput(Integer[] arrayToWrite, boolean append) {
         try (DataOutputStream out = new DataOutputStream(
                 new FileOutputStream(fileName, append))) {
@@ -89,7 +127,8 @@ public class IntegerWriter implements ArrayWriter<Integer> {
         }
     }
 
-    private void writeWithFileChannel(Integer[] arrayToWrite, boolean append) {
+    private void writeWithFileChannel(final Integer[] arrayToWrite,
+            final boolean append) {
         ByteBuffer buffer = ByteBuffer.allocateDirect(
                 ByteUtils.BYTE_MULTIPLIER * arrayToWrite.length);
         for (int i : arrayToWrite) {

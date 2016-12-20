@@ -30,10 +30,12 @@ import java.util.logging.Logger;
 public class IntegerFileProcessor implements FileProcessor<Integer> {
 
     private static final Logger LOG = Logger.getLogger(IntegerFileProcessor.class.getName());
-    
+
     private final String fileName;
+
     /**
-     * Initializes filename. Throws IllegalArgumentException if filename is null.
+     * Initializes filename. Throws IllegalArgumentException if filename is
+     * null.
      *
      * @param fileName
      */
@@ -59,7 +61,10 @@ public class IntegerFileProcessor implements FileProcessor<Integer> {
                 }
                 if (beforeValue > newValue) {
                     result = false;
-                    LOG.log(Level.INFO, "before ={0}, new ={1}", new Object[]{beforeValue, newValue});
+                    LOG.log(Level.INFO, "[{2}]. before ={0}, new ={1}",
+                            new Object[]{Integer.toHexString(beforeValue),
+                                Integer.toHexString(newValue),
+                            i});
                     break;
                 }
                 beforeValue = newValue;

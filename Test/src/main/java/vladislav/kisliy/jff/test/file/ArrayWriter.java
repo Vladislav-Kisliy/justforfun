@@ -16,11 +16,27 @@
  */
 package vladislav.kisliy.jff.test.file;
 
+import java.util.Collection;
+import java.util.Set;
+
 /**
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
 public interface ArrayWriter<T> {
     
+    /**
+     * Writes array elements in file.
+     * @param arrayToWrite
+     * @param append 
+     */
     void write(T[] arrayToWrite, boolean append);
+
+    /**
+     * Writes set elelments in file.
+     * @param collection
+     * @param append
+     * @param clearFactor 
+     */
+    void dropToFile(Collection<T> collection, boolean append, float clearFactor);
 }

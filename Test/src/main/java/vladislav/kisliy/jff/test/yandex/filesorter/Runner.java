@@ -29,6 +29,7 @@ import vladislav.kisliy.jff.test.file.ArrayWriter;
 import vladislav.kisliy.jff.test.file.IntegerFileProcessor;
 import vladislav.kisliy.jff.test.file.IntegerWriter;
 import vladislav.kisliy.jff.test.file.FileProcessor;
+import vladislav.kisliy.jff.test.yandex.AbstractSorter;
 
 /**
  *
@@ -51,29 +52,27 @@ public class Runner {
 //[7] =-419477397
 //[8] =-840568530
 //[9] =-1599058773
-    
     public static void main(String[] args) throws FileNotFoundException, IOException {
-//        generateFile();
 
-        RandomAccessFile input =new RandomAccessFile(FILENAME_SORTED, "r");
-//        long length = new File(FILENAME_SORTED).length();
-        MappedByteBuffer in = input
-                .getChannel().map(FileChannel.MapMode.READ_ONLY, 0, input.length());
-        
-        for (int i = 0; i < input.length(); i+=4) {
-            System.out.println(in.getInt());
-        }
+//        generateUnsortedFile();
+//        RandomAccessFile input =new RandomAccessFile(FILENAME_SORTED, "r");
+////        long length = new File(FILENAME_SORTED).length();
+//        MappedByteBuffer in = input
+//                .getChannel().map(FileChannel.MapMode.READ_ONLY, 0, input.length());
+//        
+//        for (int i = 0; i < input.length(); i+=4) {
+//            System.out.println(in.getInt());
+//        }
 //        int i = 0;
 //        while (i < input.length()) {
 //            System.out.println(in.getInt());
 //            i+=4;
 //        }
-
 //        generateSortedFile();
 //
 //        checkFile();
     }
-    
+
     private static void checkFile() {
         FileProcessor<Integer> fileChecker = new IntegerFileProcessor(FILENAME_SORTED);
         System.out.println("isSorted =" + fileChecker.isSorted());
@@ -81,16 +80,17 @@ public class Runner {
     }
 
     private static void generateSortedFile() {
-        ArrayWriter<Integer> arrayWriter = new IntegerWriter(FILENAME_SORTED);
+        ArrayWriter<Integer> arrayWriter = new IntegerWriter(FILENAME_SORTED + "_new");
         Integer[] sortedArray = new Integer[5500];
         for (int i = 0; i < sortedArray.length; i++) {
             sortedArray[i] = i;
-            
+
         }
         arrayWriter.write(sortedArray, false);
     }
+
     private static void generateUnsortedFile() {
-        ArrayWriter<Integer> arrayWriter = new IntegerWriter(FILENAME);
+        ArrayWriter<Integer> arrayWriter = new IntegerWriter(FILENAME + "_new");
 //                IntegerWriter.MODE.DataOutput);
 
         initArray();
