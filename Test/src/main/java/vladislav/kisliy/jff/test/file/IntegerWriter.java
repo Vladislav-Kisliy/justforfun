@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Contains useful methods for writing Integers in file.
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
 public class IntegerWriter implements ArrayWriter<Integer> {
@@ -76,26 +76,31 @@ public class IntegerWriter implements ArrayWriter<Integer> {
         if (clearFactor < 0.0f || clearFactor > 1.0f) {
             throw new IllegalArgumentException();
         }
-        ByteBuffer buffer = ByteBuffer.allocateDirect(
-                ByteUtils.BYTE_MULTIPLIER * collection.size());
         int itemsToProcess = (int) (collection.size() * clearFactor);
+        ByteBuffer buffer = ByteBuffer.allocateDirect(
+                ByteUtils.BYTE_MULTIPLIER * itemsToProcess);
+        System.out.println("real =" + collection.size() + ", itemsToProcess =" + itemsToProcess);
         Collection processedItems = new ArrayList(itemsToProcess);
         int i = 0;
         for (Integer item : collection) {
             if (i < itemsToProcess) {
                 buffer.putInt(item);
                 processedItems.add(item);
+            } else {
+                break;
             }
             i++;
         }
-        collection.removeAll(processedItems);
-        System.out.println("will drop to file =" + itemsToProcess
-                + ", original collection size =" + collection.size());
-
+        if (clearFactor == 1.0f) {
+            collection.clear();
+        } else {
+            collection.removeAll(processedItems);
+        }
+        LOG.log(Level.INFO, "will drop to file ={0}, collection size after removing items ={1}",
+                new Object[]{itemsToProcess, collection.size()});
         buffer.flip();
         try (FileOutputStream out = new FileOutputStream(fileName, append);
                 FileChannel fileChannel = out.getChannel();) {
-            LOG.log(Level.INFO, "write {0} int's", collection.size());
             while (buffer.hasRemaining()) {
                 fileChannel.write(buffer);
             }

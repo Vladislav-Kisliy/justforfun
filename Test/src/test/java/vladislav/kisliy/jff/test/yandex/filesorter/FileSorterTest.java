@@ -19,10 +19,6 @@ package vladislav.kisliy.jff.test.yandex.filesorter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import vladislav.kisliy.jff.test.file.IntegerFileProcessor;
@@ -37,22 +33,6 @@ public class FileSorterTest {
     private static final String FILENAME_OUTPUT = "/tmp/sort_result.bin";
     private static final String FILENAME_SORTED = "/home/vlad/work/projects/school/int_array_sorted.bin";
 
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
     /**
      * Test of sort method, of class FileSorter.
      */
@@ -60,11 +40,8 @@ public class FileSorterTest {
     public void testSort() {
         FileSorter instance = new FileSorter(FILENAME, FILENAME_OUTPUT);
         instance.sort();
-        System.out.println("--- instance =" + instance);
-//        IntegerFileProcessor fileProcessor = new IntegerFileProcessor(FILENAME_OUTPUT);
-//        assertTrue(fileProcessor.isSorted());
-
-
+        IntegerFileProcessor fileProcessor = new IntegerFileProcessor(FILENAME_OUTPUT);
+        assertTrue(fileProcessor.isSorted());
 
 //        IntegerFileProcessor fileProcessor = new IntegerFileProcessor("/tmp/sorter3039597417742046722.tmp");
 //        assertTrue(fileProcessor.isSorted());
@@ -91,6 +68,7 @@ public class FileSorterTest {
         FileSorter instance = new FileSorter(FILENAME, FILENAME_OUTPUT);
         instance.mergeSortedFiles(splitFiles);
 
+        System.out.println("testMergeSortedFiles. check");
         IntegerFileProcessor fileProcessor = new IntegerFileProcessor(FILENAME_OUTPUT);
         assertTrue(fileProcessor.isSorted());
     }
