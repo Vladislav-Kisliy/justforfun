@@ -56,21 +56,21 @@ public class SeamCarverTest {
     public void testFindVerticalSeam() {
         String fileName = "/home/vlad/work/projects/school/algs/tasks/seam-carve/seam/6x5.png";
         Picture picture = new Picture(fileName);
-        SeamCarver instance = new SeamCarver(picture);
+        SeamCarver1 instance = new SeamCarver1(picture);
         int[] expResult = new int[]{5,4,3,2,3};
         int[] result = instance.findVerticalSeam();
         assertArrayEquals(expResult, result);
 
         fileName = "/home/vlad/work/projects/school/algs/tasks/seam-carve/seam/1x8.png";
         picture = new Picture(fileName);
-        instance = new SeamCarver(picture);
+        instance = new SeamCarver1(picture);
         expResult = new int[8];
         result = instance.findVerticalSeam();
         assertArrayEquals(expResult, result);
 
         fileName = "/home/vlad/work/projects/school/algs/tasks/seam-carve/seam/7x10.png";
         picture = new Picture(fileName);
-        instance = new SeamCarver(picture);
+        instance = new SeamCarver1(picture);
 
         expResult = new int[]{4,3,4,3,4,3,3,2,2,3};
         result = instance.findVerticalSeam();

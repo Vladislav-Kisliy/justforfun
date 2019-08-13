@@ -1,6 +1,7 @@
 package vladislav.kisliy.jff.test.coursera;
 
 import edu.princeton.cs.algs4.Picture;
+import edu.princeton.cs.algs4.Topological;
 
 import java.awt.*;
 
@@ -16,6 +17,7 @@ public class SeamCarver {
     private boolean isChanged = false;
     private int height, width;
     private double[][] energyArr;
+    private double[][] distTo;
 
     public SeamCarver(Picture picture) {
         if (picture == null) {
@@ -59,6 +61,7 @@ public class SeamCarver {
         if (isChanged) {
             refreshEnergy();
         }
+        Topological topological = new Topological();
         Seam minSeam = new Seam(new int[]{});
         minSeam.cost = MAX_ENERGY;
         for (int y = 0; y < height; y++) {
