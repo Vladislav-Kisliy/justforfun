@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,6 +28,7 @@ import static org.junit.Assert.*;
  *
  * @author vlad
  */
+@Ignore
 public class DoubleLinearTest {
     
     public DoubleLinearTest() {

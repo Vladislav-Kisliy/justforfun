@@ -25,12 +25,15 @@ import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *
  * @author vlad
  */
+@Ignore
 public class JosephusTest {
 
     public JosephusTest() {

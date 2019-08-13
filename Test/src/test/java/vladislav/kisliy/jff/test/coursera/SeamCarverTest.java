@@ -7,6 +7,7 @@ package vladislav.kisliy.jff.test.coursera;/*
 import edu.princeton.cs.algs4.Picture;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Vladislav Kisliy <vladislav.kisliy@gmail.com>
  */
+@Ignore
 public class SeamCarverTest {
 
     @Before

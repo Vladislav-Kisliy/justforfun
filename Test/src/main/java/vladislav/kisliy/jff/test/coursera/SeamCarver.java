@@ -61,7 +61,6 @@ public class SeamCarver {
         if (isChanged) {
             refreshEnergy();
         }
-        Topological topological = new Topological();
         Seam minSeam = new Seam(new int[]{});
         minSeam.cost = MAX_ENERGY;
         for (int y = 0; y < height; y++) {

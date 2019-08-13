@@ -16,6 +16,7 @@
  */
 package vladislav.kisliy.jff.test.file;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -23,6 +24,7 @@ import static org.junit.Assert.*;
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
+@Ignore
 public class IntegerFileProcessorTest {
 
     private static final String FILENAME = "/home/vlad/work/projects/school/int_array.bin";

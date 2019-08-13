@@ -19,6 +19,8 @@ package vladislav.kisliy.jff.test.yandex.filesorter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import vladislav.kisliy.jff.test.file.IntegerFileProcessor;
@@ -27,6 +29,7 @@ import vladislav.kisliy.jff.test.file.IntegerFileProcessor;
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
+@Ignore
 public class FileSorterTest {
 
     private static final String FILENAME = "/home/vlad/work/projects/school/int_array.bin";

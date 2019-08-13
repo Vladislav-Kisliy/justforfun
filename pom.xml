@@ -21,6 +21,7 @@
     <modules>
         <module>TicTacToe</module>
         <module>Test</module>
+        <module>NIO-Course</module>
     </modules>
 
     <dependencies>
@@ -44,8 +45,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.9</source>
+                    <target>1.9</target>
 <!--                    <verbose>true</verbose>
                     <fork>true</fork>
                     <executable>/usr/java/jdk1.8.0_45_x64/bin/javac</executable>

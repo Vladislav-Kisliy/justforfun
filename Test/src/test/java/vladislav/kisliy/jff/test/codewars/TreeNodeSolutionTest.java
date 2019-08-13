@@ -20,6 +20,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertThat;
  *
  * @author Vladislav Kislyi <vladislav.kisliy@gmail.com>
  */
+@Ignore
 public class TreeNodeSolutionTest {
 
     @Test
