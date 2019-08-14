@@ -15,21 +15,29 @@ public class SingleThreadedBlockingServer {
         ServerSocket ss = new ServerSocket(8080);
         while (true) {
             Socket s = ss.accept(); //blocks, never null
-            InputStream in = s.getInputStream();
-            OutputStream out = s.getOutputStream();
+            handle(s);
+        }
+    }
+
+    private static void handle(Socket s) {
+        System.out.println("Connected with " + s);
+        try (s;
+             InputStream in = s.getInputStream();
+             OutputStream out = s.getOutputStream()) {
             // test mode
 //            in.transferTo(out);
             int data;
             while ((data = in.read()) != -1) {
                 out.write(transmografy(data));
             }
-            out.close();
-            in.close();
-            s.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            System.out.println("Disconnected from " + s);
         }
     }
 
     private static int transmografy(int data) {
-        return Character.isLetter(data) ? data ^ ' ': data;
+        return Character.isLetter(data) ? data ^ ' ' : data;
     }
 }
