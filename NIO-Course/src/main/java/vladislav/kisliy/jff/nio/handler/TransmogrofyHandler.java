@@ -20,6 +20,7 @@ public class TransmogrofyHandler implements Handler<Socket> {
 //            in.transferTo(out);
             int data;
             while ((data = in.read()) != -1) {
+                if (data == '&') throw new IOException("Arrgh!");
                 out.write(Util.transmografy(data));
             }
         } catch (IOException ex) {
