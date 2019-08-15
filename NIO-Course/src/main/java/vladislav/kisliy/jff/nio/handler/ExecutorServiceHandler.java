@@ -18,6 +18,10 @@ public class ExecutorServiceHandler<S> extends UncheckedIOExcHandler<S> {
         this.exceptionHandler = exceptionHandler;
     }
 
+    public ExecutorServiceHandler(Handler<S> wrapperHandler, ExecutorService executorService) {
+        this(wrapperHandler, executorService, (t, e) -> System.out.println("thread: " + t + ", err: " + e));
+    }
+
     @Override
     public void handle(S s) {
         executorService.submit(new FutureTask<>(() -> {

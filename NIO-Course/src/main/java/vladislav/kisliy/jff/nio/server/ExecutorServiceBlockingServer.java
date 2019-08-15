@@ -18,8 +18,7 @@ public class ExecutorServiceBlockingServer {
     public static void main(String[] args) throws IOException {
         ServerSocket ss = new ServerSocket(8080);
         Handler<Socket> handler = new ExecutorServiceHandler<>(new PrintingHandler<>(new TransmogrofyHandler()),
-                Executors.newFixedThreadPool(30),
-                (t, e) -> System.out.println("thread: " + t + ", err: " + e));
+                Executors.newFixedThreadPool(30));
         while (true) {
             Socket s = ss.accept(); //blocks, never null
             handler.handle(s);
