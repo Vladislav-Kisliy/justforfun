@@ -12,6 +12,7 @@ public class Util {
     }
 
     public static void transmografy(ByteBuffer buf) {
+        System.out.println("Transmogrification done by "+Thread.currentThread());
         // pos = 0, limit = 80, capacity = 80
         // "hello\n", post = 6, limit = 80, cap = 80
 

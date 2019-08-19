@@ -8,6 +8,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayDeque;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Vladislav Kisliy<vkisliy@productengine.com> on 16.08.19.
@@ -26,7 +27,7 @@ public class AcceptHandler implements Handler<SelectionKey> {
         SocketChannel ch = ssch.accept(); // never null
         System.out.println("Connected to " + ssch);
 
-        pendindData.put(ch, new ArrayDeque<>());
+        pendindData.put(ch, new ConcurrentLinkedQueue<>());
 
         ch.configureBlocking(false);
         ch.register(selectionKey.selector(), SelectionKey.OP_READ);
