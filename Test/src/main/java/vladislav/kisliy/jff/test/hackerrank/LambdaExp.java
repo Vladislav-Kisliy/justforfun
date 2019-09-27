@@ -3,6 +3,7 @@ package vladislav.kisliy.jff.test.hackerrank;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 
@@ -42,6 +43,7 @@ class MyMath {
                 }
 
             }
+
             return true;
         };
     }
@@ -72,12 +74,33 @@ public class LambdaExp {
         return ret;
     }
 
+    public PerformOperation isPrime() {
+        return a -> {
+            int dividors = (int) Math.sqrt(a);
+            int counter = 0;
+            for (int i = 2; i <= dividors; i++) {
+                if (a % i == 0) counter++;
+            }
+            return (counter == 0);
+        };
+    }
+
+    public int divisorSum(int n) {
+        int dividors = (int) Math.sqrt(n);
+        int counter = 0;
+        for (int i = 2; i <= dividors; i++) {
+            if (n % i == 0) counter += i;
+        }
+        return counter;
+    }
+
     public static void main(String[] args) throws IOException {
         MyMath ob = new MyMath();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = Integer.parseInt(br.readLine());
         PerformOperation op;
         boolean ret = false;
+
         String ans = null;
         while (T-- > 0) {
             String s = br.readLine().trim();

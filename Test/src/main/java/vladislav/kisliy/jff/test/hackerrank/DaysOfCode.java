@@ -116,4 +116,8 @@ public class DaysOfCode {
 
         scanner.close();
     }
+
+    private static void swap(int i, int i1) {
+
+    }
 }
