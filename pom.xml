@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <software.junit.version>4.12</software.junit.version>
+        <software.junit.version>4.13.1</software.junit.version>
         <software.commons-io.version>2.4</software.commons-io.version>
         <software.surefire.plugin>2.18.1</software.surefire.plugin>
         <main.basedir>${basedir}</main.basedir>
