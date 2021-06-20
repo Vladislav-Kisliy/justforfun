@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by Vladislav Kisliy<vkisliy@productengine.com> on 27.09.19.
@@ -28,8 +30,20 @@ public class PrimeSolution {
 //        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
         Scanner sc = new Scanner(br);
+        Scanner scanner = new Scanner(br);
         Node head = null;
         int N = sc.nextInt();
+
+        for (int NItr = 0; NItr < N; NItr++) {
+            String[] firstNameEmailID = scanner.nextLine().split(" ");
+
+            String firstName = firstNameEmailID[0];
+
+            String emailID = firstNameEmailID[1];
+            if (emailID.endsWith("gmail.com")) {
+                System.out.println(firstName);
+            }
+        }
 
         while (N-- > 0) {
             int ele = sc.nextInt();

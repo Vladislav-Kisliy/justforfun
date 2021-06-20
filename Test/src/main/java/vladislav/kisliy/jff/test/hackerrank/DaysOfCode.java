@@ -1,6 +1,7 @@
 package vladislav.kisliy.jff.test.hackerrank;
 
-import java.security.MessageDigest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
@@ -19,102 +20,34 @@ public class DaysOfCode {
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(in);
 
-        char[] chars = Integer.toBinaryString(757).toCharArray();
-        int max = 0;
-        int counter = 0;
-        for (char oneChar : chars) {
-            if (oneChar == '1') {
-                counter++;
-            } else {
-                if (max < counter) {
-                    max = counter;
-                }
-                counter = 0;
+        int actualDay = sc.nextInt();
+        int actualMonth = sc.nextInt();
+        int actualYear = sc.nextInt();
+
+        int expectedDay = sc.nextInt();
+        int expectedMonth = sc.nextInt();
+        int expectedYear = sc.nextInt();
+        sc.close();
+
+        int fine = 0;
+        if (expectedYear <= actualYear && expectedMonth <= actualMonth &&
+                expectedDay <= actualDay) {
+            if (expectedYear < actualYear) {
+                fine = 10000;
+            } else if (expectedMonth < actualMonth) {
+                fine = 500 * (actualMonth - expectedMonth);
+            } else if (expectedDay < actualDay) {
+                fine = 15 * (actualDay - expectedDay);
             }
+        } else {
+
         }
 
-        if (max < counter) {
-            max = counter;
-        }
-        System.out.println("max =" + max);
-//        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-//
-//        Scanner sc = new Scanner(System.in);
-//        while (sc.hasNext()) {
-//            String input = sc.next();
-//            //Complete the code
-//            StringBuilder hexString = new StringBuilder();
-//            messageDigest.update(input.getBytes());
-//            byte[] digiest = messageDigest.digest();
-//
-//            for (int i = 0; i < digiest.length; i++) {
-//                String hex = Integer.toHexString(0xFF & digiest[i]);
-//                if (hex.length() == 1) {
-//                    hexString.append('0');
-//                }
-//                hexString.append(hex);
-//            }
-//
-//            System.out.println(hexString.toString());
-//        }
+        System.out.println(fine);
 
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        messageDigest.update("HelloWorld".getBytes());
-        byte[] digiest = messageDigest.digest();
-
-        StringBuilder hexString = new StringBuilder();
-
-        for (int i = 0; i < digiest.length; i++) {
-            String hex = Integer.toHexString(0xFF & digiest[i]);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
-        }
-
-        System.out.println(hexString.toString());
-
-        int n = 5;
-        for (int i = 1; i < 11; i++) {
-            System.out.println(n + " x " + i + " = " + i * n);
-        }
-
-//        Scanner s = new Scanner(System.in);
-//        int t = s.nextInt();
-//        for (int i = 0; i < t; i++) {
-//            char[] chars = s.next().toCharArray();
-//            StringBuilder oddBuilder = new StringBuilder();
-//            StringBuilder evenBuilder = new StringBuilder();
-//            for (int j = 0; j < chars.length; j++) {
-//                if (j % 2 == 0) {
-//                    evenBuilder.append(chars[j]);
-//                } else {
-//                    oddBuilder.append(chars[j]);
-//                }
-//            }
-//            System.out.println(evenBuilder.toString() + " " + oddBuilder.toString());
-//        }
-
-        Scanner scanner = new Scanner(System.in);
-        n = scanner.nextInt();
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-        int[] arr = new int[n];
-
-        String[] arrItems = scanner.nextLine().split(" ");
-        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
-
-        for (int i = 0; i < n; i++) {
-            int arrItem = Integer.parseInt(arrItems[i]);
-            arr[i] = arrItem;
-        }
-
-        for (int i = n - 1; i >= 0; i--) {
-            System.out.print(arr[i] + " ");
-        }
-
-        scanner.close();
     }
 
     private static void swap(int i, int i1) {

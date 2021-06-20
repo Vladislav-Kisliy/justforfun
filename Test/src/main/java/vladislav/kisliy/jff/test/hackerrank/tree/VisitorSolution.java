@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Created by Vladislav Kisliy<vkisliy@productengine.com> on 16.09.19.
@@ -109,29 +109,36 @@ abstract class TreeVis {
 
 class SumInLeavesVisitor extends TreeVis {
     private int counter = 0;
+    private int leavesCounter = 0;
+    private int nodesCounter = 0;
 
     public int getResult() {
         return counter;
     }
 
     public void visitNode(TreeNode node) {
-//        System.out.println("Skip node: " +
-//                node.getValue() + ", level: " + node.getDepth() + ", color: " + node.getColor());
+        nodesCounter++;
+        System.out.println("Skip node: " +
+                node.getValue() + ", level: " + node.getDepth() + ", color: " + node.getColor() +
+                ". nodes =" + nodesCounter);
     }
 
     public void visitLeaf(TreeLeaf leaf) {
-//        System.out.println("Add leaf value: " +
-//                leaf.getValue() + ", level: " + leaf.getDepth() + ", color: " + leaf.getColor());
         counter += leaf.getValue();
+        leavesCounter++;
+        System.out.println("Add leaf value: " +
+                leaf.getValue() + ", level: " + leaf.getDepth() + ", color: " + leaf.getColor() +
+                ", counter =" + counter + ", leaves =" + leavesCounter);
     }
 }
 
 class ProductOfRedNodesVisitor extends TreeVis {
 
-    private int counter = 1;
+    private long counter = 1;
+    private final int M = 1000000007;
 
     public int getResult() {
-        return counter;
+        return (int) counter;
     }
 
     public void visitNode(TreeNode node) {
@@ -148,7 +155,7 @@ class ProductOfRedNodesVisitor extends TreeVis {
             if (elementValue == 0) {
                 elementValue = 1;
             }
-            counter = counter * elementValue;
+            counter = (counter * elementValue) % M;
         }
     }
 }
@@ -158,212 +165,113 @@ class FancyVisitor extends TreeVis {
     int leavesSum = 0;
 
     public int getResult() {
-
         return Math.abs(nodesSum - leavesSum);
     }
 
     public void visitNode(TreeNode node) {
         if (node.getDepth() % 2 == 0) {
             nodesSum += node.getValue();
-//            System.out.println("Even node: " +
-//                    node.getValue() + ", level: " + node.getDepth() + ", color: " + node.getColor() + ". acc =" + nodesSum);
         }
     }
 
     public void visitLeaf(TreeLeaf leaf) {
         if (leaf.getColor() == Color.GREEN) {
             leavesSum += leaf.getValue();
-//            System.out.println("Gree leaf: " +
-//                    leaf.getValue() + ", level: " + leaf.getDepth() + ", color: " + leaf.getColor() + ". acc =" + leavesSum);
         }
-    }
-}
-
-class TreeAggr {
-
-    private int type;
-    private int value;
-    private Color color;
-    private int depth;
-
-    public TreeAggr(int type, int value, Color color) {
-        this.type = type;
-        this.value = value;
-        this.color = color;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public int getDepth() {
-        return depth;
-    }
-
-    public void setDepth(int depth) {
-        this.depth = depth;
     }
 }
 
 public class VisitorSolution {
 
-    private static Queue<TreeAggr> queue = new LinkedList<>();
-
-    public static void display01(TreeAggr head) {
-        if (head == null) {
-            while (!queue.isEmpty()) {
-                TreeAggr start = queue.poll();
-                if (start.getType() == 1) {
-                    System.out.print("Node: ");
-                } else {
-                    System.out.print("Leaf: ");
-                }
-
-                System.out.print(start.getValue());
-//                )
-//                queue.addAll(start.)
-
-            }
-        } else {
-            queue.add(head);
-//            display(null);
-        }
-
-        TreeAggr start = head;
-        while (start != null) {
-            if (start.getType() == 1) {
-                System.out.print("Node: ");
-            } else {
-                System.out.print("Leaf: ");
-            }
-
-            System.out.print(start.getValue());
-        }
-    }
-
-    public static void display(TreeAggr[] list) {
-        for (TreeAggr node : list) {
-            if (node.getType() == 1) {
-                System.out.print("Node value: ");
-            } else {
-                System.out.print("Leaf value:  ");
-            }
-
-            System.out.println(node.getValue() + ", level: " + node.getDepth() + ", color: " + node.getColor());
-        }
-
-    }
-
     public static Tree solve() throws FileNotFoundException {
 //        397762
 //        584910388
 //        157653
-
 //        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input05.txt")));
+
+//        24
+//        40
+//        15
+//        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input00.txt")));
 
 
 //        45136
 //        56618427
 //        14333
-//        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input01.txt")));
+        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input01.txt")));
 
 //        41684
 //        76092041
 //        16795
-        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input02.txt")));
+//        BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input02.txt")));
 
 //        InputStream in = new FileInputStream("/home/vlad/work/projects/gits/justforfun/Test/src/main/resources/input00.txt");
 //        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         Scanner sc = new Scanner(in);
         int N = sc.nextInt();
 
-        int[] nodeValues = new int[N];
-        int counter = 0;
-        while (N-- > 0) {
-            int value = sc.nextInt();
-            nodeValues[counter] = value;
-            counter++;
-        }
+        int[] nodesValues = new int[N];
 
-        counter = 0;
-        N = nodeValues.length;
+        Map<Integer, Set<Integer>> links = new HashMap<>(N);
+
         Color[] colorValues = new Color[N];
-        while (N-- > 0) {
-            int value = sc.nextInt();
-            if (value == 0) {
-                colorValues[counter] = Color.RED;
+        for (int i = 0; i < N; i++) {
+            nodesValues[i] = sc.nextInt();
+        }
+        for (int i = 0; i < N; i++) {
+            colorValues[i] = sc.nextInt() == 0 ? Color.RED : Color.GREEN;
+        }
+
+        for (int i = 0; i < N - 1; i++) {
+            int parent = sc.nextInt();
+            int child = sc.nextInt();
+
+            /* !!! Edges are undirected */
+            Set<Integer> parentNeighbors = links.get(parent);
+            if (parentNeighbors == null) {
+                parentNeighbors = new HashSet<>();
+                links.put(parent, parentNeighbors);
+            }
+            parentNeighbors.add(child);
+
+            /* !!! Edges are undirected */
+            Set<Integer> childNeighbors = links.get(child);
+            if (childNeighbors == null) {
+                childNeighbors = new HashSet<>();
+                links.put(child, childNeighbors);
+            }
+            childNeighbors.add(parent);
+        }
+        sc.close();
+
+        if (N == 1) {
+            return new TreeLeaf(nodesValues[0], colorValues[0], 0);
+        }
+
+        TreeNode root = new TreeNode(nodesValues[0], colorValues[0], 0);
+        addChildren(root, 1, links, nodesValues, colorValues);
+
+        return root;
+    }
+
+    private static void addChildren(TreeNode parent, Integer parentNum,
+                                    Map<Integer, Set<Integer>> links,
+                                    int[] nodesValues, Color[] colorValues) {
+        for (Integer treeNum : links.get(parentNum)) {
+            links.get(treeNum).remove(parentNum);
+
+            Set<Integer> grandChildren = links.get(treeNum);
+            boolean shouldBeNode = (grandChildren != null && !grandChildren.isEmpty());
+            Tree tree;
+            if (shouldBeNode) {
+                tree = new TreeNode(nodesValues[treeNum - 1], colorValues[treeNum - 1], parent.getDepth() + 1);
+                addChildren((TreeNode) tree, treeNum, links, nodesValues, colorValues);
+                parent.addChild(tree);
             } else {
-                colorValues[counter] = Color.GREEN;
-            }
-            counter++;
-        }
-        Map<Integer, List<Integer>> links = new HashMap<>();
-
-        while (sc.hasNext()) {
-            int parent = sc.nextInt() - 1;
-            int child = sc.nextInt() - 1;
-            List<Integer> integers = links.get(parent);
-            if (integers == null) {
-                List<Integer> elements = new ArrayList<>();
-                elements.add(child);
-                links.put(parent, elements);
-            } else {
-                integers.add(child);
+                tree = new TreeLeaf(nodesValues[treeNum - 1], colorValues[treeNum - 1], parent.getDepth() + 1);
+                parent.addChild(tree);
             }
         }
-        TreeAggr[] treeAggrs = new TreeAggr[nodeValues.length];
-
-        for (int i = 0; i < treeAggrs.length; i++) {
-            if (links.containsKey(i)) {
-                treeAggrs[i] = new TreeAggr(1, nodeValues[i], colorValues[i]);
-            } else {
-                treeAggrs[i] = new TreeAggr(0, nodeValues[i], colorValues[i]);
-            }
-        }
-//        System.out.println("links =" + links);
-        for (Map.Entry<Integer, List<Integer>> entry : links.entrySet()) {
-            TreeAggr element = treeAggrs[entry.getKey()];
-            for (Integer nodeIndex : entry.getValue()) {
-                treeAggrs[nodeIndex].setDepth(element.getDepth() + 1);
-            }
-        }
-
-//        display(treeAggrs);
-
-        Tree[] trees = new Tree[nodeValues.length];
-        for (int i = 0; i < treeAggrs.length; i++) {
-            TreeAggr element = treeAggrs[i];
-            if (element.getType() == 1) {
-                trees[i] = new TreeNode(element.getValue(), element.getColor(), element.getDepth());
-            } else {
-                trees[i] = new TreeLeaf(element.getValue(), element.getColor(), element.getDepth());
-            }
-        }
-
-//        System.out.println("before linking =" + Arrays.toString(trees));
-
-        for (Map.Entry<Integer, List<Integer>> entry : links.entrySet()) {
-            TreeNode treeNone = (TreeNode) trees[entry.getKey()];
-            for (Integer nodeIndex : entry.getValue()) {
-                treeNone.addChild(trees[nodeIndex]);
-            }
-        }
-
-//        System.out.println("after linking =" + Arrays.toString(trees));
-
-        return trees[0];
     }
 
     public static void main(String[] args) throws FileNotFoundException {
