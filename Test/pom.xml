@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>vladislav.kisliy.jff.nio.Application</mainClass>
-        <es.version>2.3.3</es.version>
+        <es.version>6.8.15</es.version>
     </properties>
     <dependencies>
         <dependency>
