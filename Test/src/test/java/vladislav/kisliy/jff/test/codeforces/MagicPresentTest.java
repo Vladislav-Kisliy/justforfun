@@ -27,7 +27,6 @@ public class MagicPresentTest {
     @Test
     public void calculatePath02() {
         NavigableMap<Integer, NavigableSet<MagicPresent.Envelope>> envelops = new TreeMap<>();
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(1, 1, 0);
 
         envelops.clear();
         NavigableSet<MagicPresent.Envelope> set01 = new TreeSet();
@@ -54,7 +53,7 @@ public class MagicPresentTest {
         envelops.put(904800, set06);
 
 
-        assertEquals(6, testTarget.calculatePath(testTarget.getEnvelopeList(envelops), postCard).length);
+        assertEquals(6, testTarget.calculatePath(testTarget.getEnvelopeList(envelops)).length);
     }
 
     @Test
@@ -62,12 +61,7 @@ public class MagicPresentTest {
         NavigableMap<Integer, NavigableSet<MagicPresent.Envelope>> envelops = new TreeMap<>();
         NavigableSet<MagicPresent.Envelope> set01 = new TreeSet();
         NavigableSet<MagicPresent.Envelope> set02 = new TreeSet();
-        NavigableSet<MagicPresent.Envelope> set03 = new TreeSet();
-        NavigableSet<MagicPresent.Envelope> set04 = new TreeSet();
-        NavigableSet<MagicPresent.Envelope> set05 = new TreeSet();
-        NavigableSet<MagicPresent.Envelope> set06 = new TreeSet();
 
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(1000, 998, 0);
         set01.add(new MagicPresent.Envelope(5002, 5005, 1));
         set01.add(new MagicPresent.Envelope(5002, 5001, 4));
         set01.add(new MagicPresent.Envelope(5002, 5002, 5));
@@ -76,19 +70,17 @@ public class MagicPresentTest {
         set02.add(new MagicPresent.Envelope(5003, 5004, 2));
         set02.add(new MagicPresent.Envelope(5003, 5002, 3));
         envelops.put(5003, set02);
-        assertEquals(2, testTarget.calculatePath(testTarget.getEnvelopeList(envelops), postCard).length);
+        assertEquals(2, testTarget.calculatePath(testTarget.getEnvelopeList(envelops)).length);
     }
 
     @Test
     public void calculatePath01Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(1, 1, 0);
-
         String data = "2 1 1\n" +
                 "2 2\n" +
                 "2 2";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(1, calculatePath.length);
         assertEquals(1, calculatePath[0].number);
     }
@@ -105,7 +97,7 @@ public class MagicPresentTest {
                 "2 6";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(3, calculatePath.length);
         assertEquals(3, calculatePath[0].number);
         assertEquals(2, calculatePath[1].number);
@@ -124,7 +116,7 @@ public class MagicPresentTest {
                 "13 13";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(0, calculatePath.length);
     }
 
@@ -139,13 +131,30 @@ public class MagicPresentTest {
                 "53 82";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        assertEquals(1, testTarget.calculatePath(envelopes, postCard).length);
+        assertEquals(1, testTarget.calculatePath(envelopes).length);
+    }
+
+    @Test
+    public void calculatePath07Input() {
+        MagicPresent.Envelope postCard = new MagicPresent.Envelope(100, 100, 0);
+
+        String data = "4 100 100\n" +
+                "332 350\n" +
+                "232 250\n" +
+                "32 50\n" +
+                "132 150";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
+        List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
+
+        assertEquals(3, calculatePath.length);
+        assertEquals(4, calculatePath[0].number);
+        assertEquals(2, calculatePath[1].number);
+        assertEquals(1, calculatePath[2].number);
     }
 
     @Test
     public void calculatePath09Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(1, 1, 0);
-
         String data = "6 1 1\n" +
                 "900000 900000\n" +
                 "902400 902400\n" +
@@ -155,7 +164,7 @@ public class MagicPresentTest {
                 "904800 904800";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(6, calculatePath.length);
         assertEquals(1, calculatePath[0].number);
         assertEquals(3, calculatePath[1].number);
@@ -167,8 +176,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath10Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(1000, 998, 0);
-
         String data = "5 1000 998\n" +
                 "5002 5005\n" +
                 "5003 5004\n" +
@@ -178,13 +185,25 @@ public class MagicPresentTest {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
         // 4 3
-        assertEquals(2, testTarget.calculatePath(envelopes, postCard).length);
+        assertEquals(2, testTarget.calculatePath(envelopes).length);
+    }
+
+    @Test
+    public void calculatePath11Input() {
+        String data = "3 5 5\n" +
+                "6 2\n" +
+                "7 8\n" +
+                "10 2";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
+        List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
+
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
+        assertEquals(1, calculatePath.length);
+        assertEquals(2, calculatePath[0].number);
     }
 
     @Test
     public void calculatePath12Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(12, 800, 0);
-
         String data = "14 12 800\n" +
                 "166 847\n" +
                 "205 889\n" +
@@ -202,7 +221,7 @@ public class MagicPresentTest {
                 "63 766";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(9, calculatePath.length);
 //        5 13 6 8 1 11 7 2 3
         assertEquals(5, calculatePath[0].number);
@@ -218,8 +237,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath13Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(600, 875, 0);
-
         String data = "15 600 875\n" +
                 "1200 451\n" +
                 "1664 852\n" +
@@ -238,12 +255,41 @@ public class MagicPresentTest {
                 "1165 705";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(3, calculatePath.length);
 //        5 13 6 8 1 11 7 2 3
         assertEquals(6, calculatePath[0].number);
         assertEquals(5, calculatePath[1].number);
         assertEquals(13, calculatePath[2].number);
+    }
+
+    @Test
+    public void calculatePathManualTest01() {
+        String data = "15 600 875\n" +
+                "1370 1720\n" +
+                "1664 852\n" +
+                "1763 1355\n" +
+                "1374 1724\n" +
+                "1374 1587\n" +
+                "1003 1513\n" +
+                "1636 1002\n" +
+                "431 367\n" +
+                "1632 690\n" +
+                "1257 778\n" +
+                "410 1632\n" +
+                "1045 1279\n" +
+                "1762 1763\n" +
+                "841 576\n" +
+                "1165 705";
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
+        List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
+        assertEquals(4, calculatePath.length);
+//        5 13 6 8 1 11 7 2 3
+        assertEquals(6, calculatePath[0].number);
+        assertEquals(1, calculatePath[1].number);
+        assertEquals(4, calculatePath[2].number);
+        assertEquals(13, calculatePath[3].number);
     }
 
     @Test
@@ -283,14 +329,20 @@ public class MagicPresentTest {
                 "1521 696";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         assertEquals(27, calculatePath.length);
-
+//        4 11 2 1 30 21 10 26 16 8 6 13 22 5 23 17 7 12 24 9 18 25 15 3 29 20 27
         assertEquals(4, calculatePath[0].number);
         assertEquals(11, calculatePath[1].number);
         assertEquals(2, calculatePath[2].number);
         assertEquals(1, calculatePath[3].number);
         assertEquals(30, calculatePath[4].number);
+        assertEquals(21, calculatePath[5].number);
+        assertEquals(10, calculatePath[6].number);
+        assertEquals(26, calculatePath[7].number);
+        assertEquals(16, calculatePath[8].number);
+        assertEquals(8, calculatePath[9].number);
+        assertEquals(6, calculatePath[10].number);
     }
 
     @Test
@@ -346,18 +398,11 @@ public class MagicPresentTest {
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        assertEquals(3, testTarget.calculatePath(envelopes, postCard).length);
-    }
-
-    @Test
-    public void calculatePathManual() {
-
+        assertEquals(3, testTarget.calculatePath(envelopes).length);
     }
 
     @Test
     public void calculatePath19Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(103232, 75323, 0);
-
 //        String data = "483 103232 75323\n" +
         String data = "483 103232 75323\n" +
                 "81079 66738\n" +
@@ -847,7 +892,7 @@ public class MagicPresentTest {
 //        System.out.println("data ="+data);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(data.getBytes());
         List<MagicPresent.Envelope> envelopes = testTarget.readEnvelops(inputStream);
-        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes, postCard);
+        MagicPresent.Envelope[] calculatePath = testTarget.calculatePath(envelopes);
         // postcard = 103232 75323
         // 292 172 402 36 288 60 375 131 294 188 - 10
         // 109285x86587, 109345x90138, 109424x96717, 109432x105466, 109534x107929, 112417x108368, 112514x109755,
