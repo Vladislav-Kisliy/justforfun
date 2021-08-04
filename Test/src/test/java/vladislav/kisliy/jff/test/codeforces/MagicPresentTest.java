@@ -87,8 +87,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath03Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(10, 10, 0);
-
         String data = "5 10 10\n" +
                 "22 23\n" +
                 "17 19\n" +
@@ -106,8 +104,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath04Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(13, 13, 0);
-
         String data = "5 13 13\n" +
                 "4 4\n" +
                 "10 10\n" +
@@ -122,8 +118,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath05Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(12, 140, 0);
-
         String data = "4 12 140\n" +
                 "172 60\n" +
                 "71 95\n" +
@@ -136,8 +130,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath07Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(100, 100, 0);
-
         String data = "4 100 100\n" +
                 "332 350\n" +
                 "232 250\n" +
@@ -294,8 +286,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath14Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(900, 15, 0);
-
         String data = "30 900 15\n" +
                 "1396 562\n" +
                 "1265 475\n" +
@@ -347,8 +337,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath16Input() {
-        MagicPresent.Envelope postCard = new MagicPresent.Envelope(6134, 8495, 0);
-
         String data = "45 6134 8495\n" +
                 "9045 8632\n" +
                 "4145 4991\n" +
@@ -403,7 +391,6 @@ public class MagicPresentTest {
 
     @Test
     public void calculatePath19Input() {
-//        String data = "483 103232 75323\n" +
         String data = "483 103232 75323\n" +
                 "81079 66738\n" +
                 "100815 103673\n" +
@@ -901,7 +888,7 @@ public class MagicPresentTest {
         // 117 450 205 475 123 192 348 42 71 208 55 334 272 349 319 188
         // 105002x75827, 105330x77311, 107311x80062, 109867x83797, 110451x85867, 111200x87784, 112390x88973, 114679x91691,
         // 115259x94225, 115927x95533, 116526x97263, 116604x103047, 117697x109295, 118683x109764, 119502x110785, 119534x112322
-        System.out.println("Result ="+Arrays.toString(calculatePath));
+        System.out.println("Result =" + Arrays.toString(calculatePath));
         assertEquals(16, calculatePath.length);
         assertEquals(117, calculatePath[0].number);
         assertEquals(450, calculatePath[1].number);
@@ -910,6 +897,23 @@ public class MagicPresentTest {
         assertEquals(123, calculatePath[4].number);
         assertEquals(192, calculatePath[5].number);
         assertEquals(348, calculatePath[6].number);
+        assertEquals(42, calculatePath[7].number);
+        assertEquals(71, calculatePath[8].number);
+        assertEquals(208, calculatePath[9].number);
+        assertEquals(55, calculatePath[10].number);
+        assertEquals(334, calculatePath[11].number);
+        assertEquals(272, calculatePath[12].number);
+        assertEquals(349, calculatePath[13].number);
+        assertEquals(319, calculatePath[14].number);
+        assertEquals(188, calculatePath[15].number);
     }
+
+    // 26
+    // 120
+    // 2087 2575 2098 4521 4354 4967 551 1755 388 1200 2633 3306 1457 1499 1356 1644 4140 1187 1859 1955 4054 4074 321
+    // 3978 1795 1952 3285 468 79 1235 540 893 3689 1261 4318 3945 2379 2965 1853 4130 1546 3314 1639 4408 2278 4160
+    // 1906 136 1061 610 3163 1155 968 1685 2608 2860 867 2284 2273 4888 306 2851 2639 3722 293 1918 4476 2211 3204
+    // 3705 4974 873 3472 3587 3043 318 1195 169 3059 2429 3996 401 1313 2352 1946 2818 2655 1630 714 2193 55 2467 4853
+    // 422 2983 2279 4385 1408 1007 1619 1891 517 2553 2005 734 620
 
 }

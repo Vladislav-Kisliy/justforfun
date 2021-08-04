@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -18,8 +16,8 @@ import java.util.TreeSet;
 
 public class MagicPresent {
 
-    private static final String NEWLINE = System.getProperty("line.separator");
     public static final int FAILURE = -1;
+    private static boolean[][] visited;
 
     public static void main(String[] args) throws Exception {
         InputStream in = System.in;
@@ -43,19 +41,27 @@ public class MagicPresent {
             firstLine.add(envelope);
             for (int i = 1; i < envelops.size(); i++) {
                 Envelope nextEnvelope = envelops.get(i);
-                if (envelope.addWrap(nextEnvelope) == FAILURE) {
+                if (addWrap(envelope, nextEnvelope) == FAILURE) {
                     firstLine.add(nextEnvelope);
                 }
             }
         }
+
 //        System.out.println("envelops after adding=" + firstLine.size());
 //        System.out.println("envelops after adding=" + firstLine);
+        for (int i = 1; i < firstLine.size(); i++) {
+            Envelope envelope = firstLine.get(i);
+            for (int j = i + 1; j < firstLine.size(); j++) {
+                Envelope nextEnvelope = firstLine.get(j);
+                addWrap(envelope, nextEnvelope);
+            }
+        }
+        envelops.removeAll(firstLine);
 
         for (int i = 1; i < firstLine.size(); i++) {
             Envelope envelope = firstLine.get(i);
-            for (int j = i + 1; j < envelops.size(); j++) {
-                Envelope nextEnvelope = envelops.get(j);
-                envelope.addWrap(nextEnvelope);
+            for (Envelope nextEnvelope : envelops) {
+                addWrap(envelope, nextEnvelope);
             }
         }
 
@@ -63,15 +69,15 @@ public class MagicPresent {
         Envelope result = null;
         int maxValue = -1;
         for (Envelope env : firstLine) {
-            env.validateMaxDepth();
-            if (maxValue < env.getMaxDepth()) {
-                maxValue = env.getMaxDepth();
+            validateMaxDepth(env);
+            if (maxValue < env.maxDepth) {
+                maxValue = env.maxDepth;
                 result = env;
 //                System.out.println("Choose max =" + env + ", max=" + maxValue);
             }
         }
         if (result != null) {
-            array = result.getLongestPath();
+            array = getLongestPath(result);
         }
 //        System.out.println("envelops result=" + Arrays.toString(array));
 
@@ -99,7 +105,7 @@ public class MagicPresent {
         final int height;
         final int number;
         int maxDepth = 1;
-        LinkedList<Envelope> adj = new LinkedList<>();
+        List<Envelope> adj = new ArrayList<>();
         Envelope tail = null;
 
         public Envelope(int width, int height, int number) {
@@ -111,73 +117,6 @@ public class MagicPresent {
         public boolean biggerThan(Envelope envelope) {
             if (envelope == null) return false;
             return (this.height > envelope.height) && (this.width > envelope.width);
-        }
-
-        public int getMaxDepth() {
-            return maxDepth;
-        }
-
-        public int validateMaxDepth() {
-            int result = 1;
-            if (tail != null) {
-                result = tail.validateMaxDepth() + 1;
-                maxDepth = result;
-            }
-            return result;
-        }
-
-        public Envelope[] getLongestPath() {
-            Envelope[] result;
-            if (tail == null) {
-                result = new Envelope[]{this};
-            } else {
-                result = new Envelope[maxDepth];
-                Envelope[] tailLongestPath = tail.getLongestPath();
-                for (int i = 0; i < tailLongestPath.length; i++) {
-                    result[i + 1] = tailLongestPath[i];
-                }
-                result[0] = this;
-            }
-            return result;
-        }
-
-        public int addWrap(Envelope envelope) {
-            int result = FAILURE;
-            if (!adj.contains(envelope) && envelope.biggerThan(this)) {
-                if (adj.isEmpty()) {
-                    adj.add(envelope);
-                    tail = envelope;
-                    maxDepth = envelope.getMaxDepth() + 1;
-                    result = maxDepth;
-                } else {
-                    List<Envelope> forAdd = new ArrayList<>();
-                    boolean maxDepthChanged = false;
-                    for (Envelope depEnvelope : adj) {
-                        if (!depEnvelope.adj.contains(envelope)) {
-                            result = depEnvelope.addWrap(envelope);
-                            if (result == FAILURE) {
-                                if (!forAdd.contains(envelope)) {
-                                    forAdd.add(envelope);
-                                    maxDepthChanged = true;
-                                }
-                            } else {
-                                maxDepthChanged = true;
-                            }
-                        }
-                    }
-                    adj.addAll(forAdd);
-                    if (maxDepthChanged) {
-                        for (Envelope depEnvelope : adj) {
-                            if (maxDepth < depEnvelope.getMaxDepth() + 1) {
-                                tail = depEnvelope;
-                                maxDepth = depEnvelope.getMaxDepth() + 1;
-                            }
-                        }
-                        result = maxDepth;
-                    }
-                }
-            }
-            return result;
         }
 
         @Override
@@ -206,6 +145,69 @@ public class MagicPresent {
         public int compareTo(Envelope envelope) {
             return Integer.compare(this.height, envelope.height);
         }
+    }
+
+    public static int addWrap(Envelope root, Envelope envelope) {
+        int result = FAILURE;
+        if (!root.adj.contains(envelope) && envelope.biggerThan(root)) {
+            if (root.adj.isEmpty()) {
+                root.adj.add(envelope);
+                root.tail = envelope;
+                root.maxDepth = envelope.maxDepth + 1;
+                result = root.maxDepth;
+            } else {
+                List<Envelope> forAdd = new ArrayList<>();
+                boolean maxDepthChanged = false;
+                for (Envelope depEnvelope : root.adj) {
+                    if (!depEnvelope.adj.contains(envelope)) {
+                        result = addWrap(depEnvelope, envelope);
+                        if (result == FAILURE) {
+                            if (!forAdd.contains(envelope)) {
+                                forAdd.add(envelope);
+                                maxDepthChanged = true;
+                            }
+                        } else {
+                            maxDepthChanged = true;
+                        }
+                    }
+                }
+                root.adj.addAll(forAdd);
+                if (maxDepthChanged) {
+                    for (Envelope depEnvelope : root.adj) {
+                        if (root.maxDepth < depEnvelope.maxDepth + 1) {
+                            root.tail = depEnvelope;
+                            root.maxDepth = depEnvelope.maxDepth + 1;
+                        }
+                    }
+                    result = root.maxDepth;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int validateMaxDepth(Envelope root) {
+        int result = 1;
+        if (root.tail != null) {
+            result = validateMaxDepth(root.tail) + 1;
+            root.maxDepth = result;
+        }
+        return result;
+    }
+
+    public Envelope[] getLongestPath(Envelope root) {
+        Envelope[] result;
+        if (root.tail == null) {
+            result = new Envelope[]{root};
+        } else {
+            result = new Envelope[root.maxDepth];
+            Envelope[] tailLongestPath = getLongestPath(root.tail);
+            for (int i = 0; i < tailLongestPath.length; i++) {
+                result[i + 1] = tailLongestPath[i];
+            }
+            result[0] = root;
+        }
+        return result;
     }
 
     public List<Envelope> readEnvelops(InputStream in) {
