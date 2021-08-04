@@ -149,12 +149,13 @@ public class MagicPresent {
 
     public static int addWrap(Envelope root, Envelope envelope) {
         int result = FAILURE;
-        if (!root.adj.contains(envelope) && envelope.biggerThan(root)) {
+        if (!visited[root.number - 1][envelope.number - 1] && envelope.biggerThan(root)) {
             if (root.adj.isEmpty()) {
                 root.adj.add(envelope);
                 root.tail = envelope;
                 root.maxDepth = envelope.maxDepth + 1;
                 result = root.maxDepth;
+                visited[root.number - 1][envelope.number - 1] = true;
             } else {
                 List<Envelope> forAdd = new ArrayList<>();
                 boolean maxDepthChanged = false;
@@ -164,6 +165,7 @@ public class MagicPresent {
                         if (result == FAILURE) {
                             if (!forAdd.contains(envelope)) {
                                 forAdd.add(envelope);
+                                visited[root.number - 1][envelope.number - 1] = true;
                                 maxDepthChanged = true;
                             }
                         } else {
@@ -217,6 +219,7 @@ public class MagicPresent {
         int postCardWidth = scanner.nextInt();
         int postCardHeight = scanner.nextInt();
 
+        visited = new boolean[taskNum][taskNum];
         NavigableMap<Integer, NavigableSet<Envelope>> result = new TreeMap<>();
         int counter = 1;
 

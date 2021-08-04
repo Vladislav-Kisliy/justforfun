@@ -25,55 +25,6 @@ public class MagicPresentTest {
     }
 
     @Test
-    public void calculatePath02() {
-        NavigableMap<Integer, NavigableSet<MagicPresent.Envelope>> envelops = new TreeMap<>();
-
-        envelops.clear();
-        NavigableSet<MagicPresent.Envelope> set01 = new TreeSet();
-        set01.add(new MagicPresent.Envelope(900000, 900000, 1));
-        envelops.put(900000, set01);
-        NavigableSet<MagicPresent.Envelope> set02 = new TreeSet();
-        set02.add(new MagicPresent.Envelope(902400, 902400, 2));
-        envelops.put(902400, set02);
-
-        NavigableSet<MagicPresent.Envelope> set03 = new TreeSet<>();
-        set03.add(new MagicPresent.Envelope(901200, 901200, 3));
-        envelops.put(901200, set03);
-
-        NavigableSet<MagicPresent.Envelope> set04 = new TreeSet<>();
-        set04.add(new MagicPresent.Envelope(903600, 903600, 4));
-        envelops.put(903600, set04);
-
-        NavigableSet<MagicPresent.Envelope> set05 = new TreeSet<>();
-        set05.add(new MagicPresent.Envelope(906000, 906000, 5));
-        envelops.put(906000, set05);
-
-        NavigableSet<MagicPresent.Envelope> set06 = new TreeSet<>();
-        set06.add(new MagicPresent.Envelope(904800, 904800, 6));
-        envelops.put(904800, set06);
-
-
-        assertEquals(6, testTarget.calculatePath(testTarget.getEnvelopeList(envelops)).length);
-    }
-
-    @Test
-    public void calculatePath03() {
-        NavigableMap<Integer, NavigableSet<MagicPresent.Envelope>> envelops = new TreeMap<>();
-        NavigableSet<MagicPresent.Envelope> set01 = new TreeSet();
-        NavigableSet<MagicPresent.Envelope> set02 = new TreeSet();
-
-        set01.add(new MagicPresent.Envelope(5002, 5005, 1));
-        set01.add(new MagicPresent.Envelope(5002, 5001, 4));
-        set01.add(new MagicPresent.Envelope(5002, 5002, 5));
-        envelops.put(5002, set01);
-
-        set02.add(new MagicPresent.Envelope(5003, 5004, 2));
-        set02.add(new MagicPresent.Envelope(5003, 5002, 3));
-        envelops.put(5003, set02);
-        assertEquals(2, testTarget.calculatePath(testTarget.getEnvelopeList(envelops)).length);
-    }
-
-    @Test
     public void calculatePath01Input() {
         String data = "2 1 1\n" +
                 "2 2\n" +
