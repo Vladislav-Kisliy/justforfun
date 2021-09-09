@@ -37,10 +37,11 @@ public class MagicPresent {
     public Envelope[] calculatePath(List<Envelope> envelops) {
         // small -> big
         List<Envelope> firstLine = new ArrayList<>();
+        int chunkSize = envelops.size() / 20;
         if (!envelops.isEmpty()) {
             Envelope envelope = envelops.get(0);
             firstLine.add(envelope);
-            int iterationSize = envelops.size() < 300 ? envelops.size() : envelops.size() / 6;
+            int iterationSize = envelops.size() < 300 ? envelops.size() : chunkSize;
             for (int i = 1; i < iterationSize; i++) {
                 Envelope nextEnvelope = envelops.get(i);
                 if (addWrap(envelope, nextEnvelope) == FAILURE) {
@@ -50,7 +51,7 @@ public class MagicPresent {
         }
 
 //        System.out.println("firstLine after adding=" + firstLine.size());
-        for (int i = 1; i < firstLine.size() - 1; i++) {
+        for (int i = 1; i < firstLine.size() / 5; i++) {
             Envelope envelope = firstLine.get(i);
             for (int j = i + 1; j < firstLine.size(); j++) {
                 Envelope nextEnvelope = firstLine.get(j);
@@ -64,7 +65,7 @@ public class MagicPresent {
         }
 
         int connectionLimit = envelops.size() < 300 ? 5 : envelops.size() / 50;
-        for (int i = 1; i < envelops.size() / 3; i++) {
+        for (int i = 1; i < chunkSize; i++) {
             Envelope envelope = envelops.get(i);
             for (Envelope nextEnvelope : envelops) {
                 if (!visited[envelope.number - 1][nextEnvelope.number - 1]) {

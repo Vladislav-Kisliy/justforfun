@@ -561,5 +561,6 @@ public class MagicPresentJmh {
 //    MagicPresentJmh.testGraphs  thrpt    5  254.978 ± 25.793  ops/s
 //    MagicPresentJmh.testGraphs  thrpt    5  1288.104 ± 34.082  ops/s
 //    MagicPresentJmh.testGraphs  thrpt    5  1742.590 ± 31.526  ops/s
+//    MagicPresentJmh.testGraphs  thrpt    5  3139.799 ± 86.930  ops/s
 
 }
