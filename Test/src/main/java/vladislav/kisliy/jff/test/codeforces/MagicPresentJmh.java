@@ -551,16 +551,14 @@ public class MagicPresentJmh {
 //
 //    MagicPresentJmh.testReading  thrpt    5  9022.608 ± 496.272  ops/s
 //
-//
 //    Reader implementation:
 //    MagicPresentJmh.testReading  thrpt    5  27611.878 ± 1112.676  ops/s
 //    MagicPresentJmh.testReading  thrpt   25  26978.909 ± 600.493  ops/s
 //
 //
-//
 //    MagicPresentJmh.testGraphs  thrpt    5  3056.275 ± 389.809  ops/s
 //    MagicPresentJmh.testGraphs  thrpt    5  507.832 ± 31.638  ops/s - with old reading system
-    // 29.07
 //    MagicPresentJmh.testGraphs  thrpt    5  254.978 ± 25.793  ops/s
+//    MagicPresentJmh.testGraphs  thrpt    5  1288.104 ± 34.082  ops/s
 
 }

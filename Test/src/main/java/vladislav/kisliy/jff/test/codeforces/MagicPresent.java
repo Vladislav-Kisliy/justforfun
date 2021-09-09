@@ -4,8 +4,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -17,7 +17,9 @@ import java.util.TreeSet;
 public class MagicPresent {
 
     public static final int FAILURE = -1;
+    public static final Deque<Envelope> STACK = new LinkedList<>();
     private static boolean[][] visited;
+    private boolean debugMode;
 
     public static void main(String[] args) throws Exception {
         InputStream in = System.in;
@@ -35,10 +37,10 @@ public class MagicPresent {
     public Envelope[] calculatePath(List<Envelope> envelops) {
         // small -> big
         List<Envelope> firstLine = new ArrayList<>();
-
         if (!envelops.isEmpty()) {
             Envelope envelope = envelops.get(0);
             firstLine.add(envelope);
+            int iterationSize = envelops.size() < 300 ? envelops.size() : envelops.size() / 3;
             for (int i = 1; i < envelops.size(); i++) {
                 Envelope nextEnvelope = envelops.get(i);
                 if (addWrap(envelope, nextEnvelope) == FAILURE) {
@@ -47,21 +49,23 @@ public class MagicPresent {
             }
         }
 
-//        System.out.println("envelops after adding=" + firstLine.size());
-//        System.out.println("envelops after adding=" + firstLine);
-        for (int i = 1; i < firstLine.size(); i++) {
+//        System.out.println("firstLine after adding=" + firstLine.size());
+        for (int i = 1; i < firstLine.size() - 1; i++) {
             Envelope envelope = firstLine.get(i);
             for (int j = i + 1; j < firstLine.size(); j++) {
                 Envelope nextEnvelope = firstLine.get(j);
-                addWrap(envelope, nextEnvelope);
+                if (!visited[envelope.number - 1][nextEnvelope.number - 1]) {
+                    addWrap(envelope, nextEnvelope);
+                }
             }
         }
-        envelops.removeAll(firstLine);
 
         for (int i = 1; i < firstLine.size(); i++) {
             Envelope envelope = firstLine.get(i);
             for (Envelope nextEnvelope : envelops) {
-                addWrap(envelope, nextEnvelope);
+                if (!visited[envelope.number - 1][nextEnvelope.number - 1]) {
+                    addWrap(envelope, nextEnvelope);
+                }
             }
         }
 
@@ -69,17 +73,15 @@ public class MagicPresent {
         Envelope result = null;
         int maxValue = -1;
         for (Envelope env : firstLine) {
-            validateMaxDepth(env);
             if (maxValue < env.maxDepth) {
                 maxValue = env.maxDepth;
                 result = env;
-//                System.out.println("Choose max =" + env + ", max=" + maxValue);
             }
         }
+        validateMaxDepth(result);
         if (result != null) {
             array = getLongestPath(result);
         }
-//        System.out.println("envelops result=" + Arrays.toString(array));
 
         return array;
     }
@@ -91,8 +93,6 @@ public class MagicPresent {
                 nodes.add(envelop);
             }
         }
-//        System.out.println("getEnvelopeList size=" + nodes.size());
-//        System.out.println("getEnvelopeList =" + nodes);
         return nodes;
     }
 
@@ -112,11 +112,6 @@ public class MagicPresent {
             this.width = width;
             this.height = height;
             this.number = number;
-        }
-
-        public boolean biggerThan(Envelope envelope) {
-            if (envelope == null) return false;
-            return (this.height > envelope.height) && (this.width > envelope.width);
         }
 
         @Override
@@ -147,9 +142,13 @@ public class MagicPresent {
         }
     }
 
+    public static boolean biggerThan(Envelope root, Envelope envelope) {
+        return (root.height > envelope.height) && (root.width > envelope.width);
+    }
+
     public static int addWrap(Envelope root, Envelope envelope) {
         int result = FAILURE;
-        if (!visited[root.number - 1][envelope.number - 1] && envelope.biggerThan(root)) {
+        if (biggerThan(envelope, root)) {
             if (root.adj.isEmpty()) {
                 root.adj.add(envelope);
                 root.tail = envelope;
@@ -160,20 +159,23 @@ public class MagicPresent {
                 List<Envelope> forAdd = new ArrayList<>();
                 boolean maxDepthChanged = false;
                 for (Envelope depEnvelope : root.adj) {
-                    if (!depEnvelope.adj.contains(envelope)) {
+                    if (!visited[depEnvelope.number - 1][envelope.number - 1]) {
                         result = addWrap(depEnvelope, envelope);
                         if (result == FAILURE) {
-                            if (!forAdd.contains(envelope)) {
+                            if (!visited[root.number - 1][envelope.number - 1]) {
                                 forAdd.add(envelope);
-                                visited[root.number - 1][envelope.number - 1] = true;
                                 maxDepthChanged = true;
                             }
                         } else {
+                            visited[depEnvelope.number - 1][envelope.number - 1] = true;
                             maxDepthChanged = true;
                         }
+                        visited[root.number - 1][envelope.number - 1] = true;
                     }
                 }
-                root.adj.addAll(forAdd);
+                if (!forAdd.isEmpty()) {
+                    root.adj.addAll(forAdd);
+                }
                 if (maxDepthChanged) {
                     for (Envelope depEnvelope : root.adj) {
                         if (root.maxDepth < depEnvelope.maxDepth + 1) {
@@ -190,8 +192,15 @@ public class MagicPresent {
 
     public static int validateMaxDepth(Envelope root) {
         int result = 1;
-        if (root.tail != null) {
-            result = validateMaxDepth(root.tail) + 1;
+        if (root != null && root.tail != null) {
+            STACK.push(root.tail);
+            while (!STACK.isEmpty()) {
+                Envelope envelope = STACK.pop();
+                if (envelope.tail != null) {
+                    STACK.push(envelope.tail);
+                }
+                result++;
+            }
             root.maxDepth = result;
         }
         return result;
@@ -203,9 +212,15 @@ public class MagicPresent {
             result = new Envelope[]{root};
         } else {
             result = new Envelope[root.maxDepth];
-            Envelope[] tailLongestPath = getLongestPath(root.tail);
-            for (int i = 0; i < tailLongestPath.length; i++) {
-                result[i + 1] = tailLongestPath[i];
+            STACK.push(root.tail);
+            int counter = 1;
+            while (!STACK.isEmpty()) {
+                Envelope envelope = STACK.pop();
+                result[counter] = envelope;
+                if (envelope.tail != null) {
+                    STACK.push(envelope.tail);
+                }
+                counter++;
             }
             result[0] = root;
         }
