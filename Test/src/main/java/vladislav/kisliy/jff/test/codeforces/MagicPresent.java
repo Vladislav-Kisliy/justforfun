@@ -40,8 +40,8 @@ public class MagicPresent {
         if (!envelops.isEmpty()) {
             Envelope envelope = envelops.get(0);
             firstLine.add(envelope);
-            int iterationSize = envelops.size() < 300 ? envelops.size() : envelops.size() / 3;
-            for (int i = 1; i < envelops.size(); i++) {
+            int iterationSize = envelops.size() < 300 ? envelops.size() : envelops.size() / 6;
+            for (int i = 1; i < iterationSize; i++) {
                 Envelope nextEnvelope = envelops.get(i);
                 if (addWrap(envelope, nextEnvelope) == FAILURE) {
                     firstLine.add(nextEnvelope);
@@ -56,15 +56,22 @@ public class MagicPresent {
                 Envelope nextEnvelope = firstLine.get(j);
                 if (!visited[envelope.number - 1][nextEnvelope.number - 1]) {
                     addWrap(envelope, nextEnvelope);
+                    for (Envelope depEnvelope : nextEnvelope.adj) {
+                        visited[envelope.number - 1][depEnvelope.number - 1] = true;
+                    }
                 }
             }
         }
 
-        for (int i = 1; i < firstLine.size(); i++) {
-            Envelope envelope = firstLine.get(i);
+        int connectionLimit = envelops.size() < 300 ? 5 : envelops.size() / 50;
+        for (int i = 1; i < envelops.size() / 3; i++) {
+            Envelope envelope = envelops.get(i);
             for (Envelope nextEnvelope : envelops) {
                 if (!visited[envelope.number - 1][nextEnvelope.number - 1]) {
                     addWrap(envelope, nextEnvelope);
+                    if (envelope.adj.size() > connectionLimit) {
+                        break;
+                    }
                 }
             }
         }
@@ -237,8 +244,8 @@ public class MagicPresent {
         visited = new boolean[taskNum][taskNum];
         NavigableMap<Integer, NavigableSet<Envelope>> result = new TreeMap<>();
         int counter = 1;
-
         for (int i = 0; i < taskNum; i++) {
+            visited[i][i] = true;
             int width = scanner.nextInt();
             int height = scanner.nextInt();
             if (postCardWidth < width && postCardHeight < height) {
