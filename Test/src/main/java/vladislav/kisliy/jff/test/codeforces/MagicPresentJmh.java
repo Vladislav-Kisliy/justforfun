@@ -541,7 +541,7 @@ public class MagicPresentJmh {
     @BenchmarkMode(Mode.Throughput)
     public void testGraphs(MyState state, Blackhole blackhole) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(state.data.getBytes());
-        List<MagicPresent.Envelope> envelopes = state.magicPresent.readEnvelops(inputStream);
+        MagicPresent.Envelope[] envelopes = state.magicPresent.readEnvelops(inputStream);
         MagicPresent.Envelope[] envelopeList = state.magicPresent.calculatePath(envelopes);
         blackhole.consume(envelopeList);
     }
@@ -562,5 +562,6 @@ public class MagicPresentJmh {
 //    MagicPresentJmh.testGraphs  thrpt    5  1288.104 ± 34.082  ops/s
 //    MagicPresentJmh.testGraphs  thrpt    5  1742.590 ± 31.526  ops/s
 //    MagicPresentJmh.testGraphs  thrpt    5  3139.799 ± 86.930  ops/s
+//    MagicPresentJmh.testGraphs  thrpt    5  4700.359 ± 94.025  ops/s
 
 }
