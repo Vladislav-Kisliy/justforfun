@@ -2,7 +2,7 @@
 pub struct FileHeader {
     pub save_version: u32,
     pub game_version: u32,
-    pub _padding: u8,
+    pub padding: u8,
     pub time: u32,
     pub date: u32,
     pub archive_version: u32,

@@ -10,12 +10,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // File header: FileHeader { save_version: 263, game_version: 2120, _padding: 0, time: 36888811, date: 2122520576, archive_version: 195 }
     // let file_path = Path::new("data/sav.dat");
     // offset 0:4
-    if match processor::check_file(file_path) {
-        Ok(value) => value,
-        Err(value) => return Err(value),
-    } {
+    if processor::check_file(file_path)? {
         println!("Correct file check #1");
-    };
+    }
     let vex = fs::read(file_path).expect("Couldn't read the whole file");
     let data = vex.as_slice();
 
@@ -24,10 +21,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("File header: {:?}", header);
 
     // Read chunk directory magic number
-    if match processor::check_second_magic(data, 25) {
-        Ok(value) => value,
-        Err(value) => return Err(value),
-    } {
+    if processor::check_second_magic(data, 25) {
         println!("Correct file check #2");
     };
 
